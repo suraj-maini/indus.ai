@@ -1,7 +1,9 @@
 package ai.indus.app.ui.theme
 
+import ai.indus.app.R
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -31,4 +33,13 @@ val Typography = Typography(
         letterSpacing = 0.5.sp
     )
     */
+)
+
+val dmsansFontFamily = FontFamily(
+    Font(R.font.dm_sans, FontWeight.Normal),
+    Font(R.font.dm_sans_bold, FontWeight.Bold),
+    Font(R.font.dm_sans_bold_italic, FontWeight.Bold),
+    Font(R.font.dm_sans_italic, FontWeight.Normal),
+    Font(R.font.dm_sans_medium, FontWeight.Medium),
+    Font(R.font.dm_sans_medium_italic, FontWeight.Medium)
 )
