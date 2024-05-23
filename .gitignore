@@ -1,0 +1,93 @@
+# Android Studio specific
+.idea/
+.gradle/
+local.properties
+*.iml
+
+# User-specific configurations
+.DS_Store
+*.swp
+*.swo
+*~
+
+# Gradle files
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+.gradle/
+gradle-app/
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log files
+*.log
+
+# Android Studio auto-generated files
+captures/
+output.json
+
+# Built application files
+*.apk
+*.ap_
+*.aab
+
+# Files for the IntelliJ IDEs (including Android Studio)
+*.iws
+.idea/
+*.idea/
+*.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+.idea/dictionaries
+.idea/libraries
+.idea/gradle.xml
+.idea/vcs.xml
+.idea/navEditor.xml
+
+# Keystore files
+*.jks
+*.keystore
+
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.properties
+
+# macOS specific files
+.DS_Store
+
+# Windows specific files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+*.so
+*.dylib
+*.dll
+*.class
+
+# Java Warnings
+javacore.*
+Snap.*
+*.pid
+hs_err_pid*
+
+# Project Specific
+out/
+gen/
+bin/
