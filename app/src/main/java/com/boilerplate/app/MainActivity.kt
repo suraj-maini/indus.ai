@@ -11,15 +11,16 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.boilerplate.app.ui.theme.BoilerplateComposeTheme
+import com.boilerplate.app.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            BoilerplateComposeTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+            AppTheme {
+                Scaffold(modifier = Modifier.fillMaxSize(),
+                    containerColor = AppTheme.colorScheme.background) { innerPadding ->
                     Greeting(
                         name = "Compose Boilerplate",
                         modifier = Modifier.padding(innerPadding)
@@ -42,7 +43,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    BoilerplateComposeTheme {
+    AppTheme {
         Greeting("Android")
     }
 }
