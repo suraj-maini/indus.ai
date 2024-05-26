@@ -1,6 +1,7 @@
-package ai.indus.app.ui.theme
+package com.boilerplate.app.ui.theme
 
-import ai.indus.app.R
+
+import boilerplate.jetpackcompose.app.R
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font

@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "ai.indus.app"
+    namespace = "boilerplate.jetpackcompose.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "ai.indus.app"
+        applicationId = "boilerplate.jetpackcompose.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package ai.indus.app
+package com.boilerplate.app
 
 import org.junit.Test
 

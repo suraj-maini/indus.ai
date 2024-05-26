@@ -1,4 +1,4 @@
-package ai.indus.app
+package com.boilerplate.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,17 +11,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import ai.indus.app.ui.theme.IndusaiTheme
+import com.boilerplate.app.ui.theme.BoilerplateComposeTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            IndusaiTheme {
+            BoilerplateComposeTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "AI",
+                        name = "Compose Boilerplate",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Indus $name!",
+        text = "Jetpack $name!",
         modifier = modifier
     )
 }
@@ -41,7 +41,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
-    IndusaiTheme {
+    BoilerplateComposeTheme {
         Greeting("Android")
     }
 }
