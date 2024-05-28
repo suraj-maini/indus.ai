@@ -1,6 +1,5 @@
-package com.boilerplate.app.composables
+package com.boilerplate.app.ui.composables
 
-import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
