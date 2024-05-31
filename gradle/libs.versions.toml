@@ -1,6 +1,6 @@
 [versions]
-agp = "7.4.2"
-kotlin = "1.8.0"
+agp = "8.2.2"
+kotlin = "1.9.0"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -9,7 +9,7 @@ lifecycleRuntimeKtx = "2.8.0"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 hiltVersion = "2.44"
-kspVersion = "1.9.22-1.0.17"
+kspVersion = "1.9.0-1.0.12"
 retrofitJakewhartonVersion = "1.0.0"
 retrofitVersion = "2.9.0"
 okhttpVersion = "5.0.0-alpha.5"
@@ -32,7 +32,7 @@ androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-view
 androidx-activity-ktx = { module = "androidx.activity:activity-ktx", version.ref = "activityKtx" }
 androidx-fragment-ktx = { module = "androidx.fragment:fragment-ktx", version.ref = "fragmentKtx" }
 androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompatVersion" }
-kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version = "2.0.0" }
+#kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutinesVersion" }

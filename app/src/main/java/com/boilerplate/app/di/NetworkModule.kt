@@ -1,6 +1,7 @@
 package com.boilerplate.app.di
 
 import android.content.Context
+import boilerplate.jetpackcompose.app.BuildConfig
 import com.boilerplate.app.data.service.ApiService
 import com.squareup.moshi.Moshi
 import dagger.Module

@@ -40,6 +40,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -65,6 +66,8 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
 
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.appcompat)
+//    implementation(libs.kotlin.stdlib)
 
 
     //Hilt
