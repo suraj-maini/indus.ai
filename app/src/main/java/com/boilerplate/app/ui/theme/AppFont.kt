@@ -3,7 +3,7 @@ package com.boilerplate.app.ui.theme
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import boilerplate.jetpackcompose.app.R
+import com.boilerplate.app.R
 
 val DMSansFontFamily = FontFamily(
     Font(R.font.dm_sans, FontWeight.Normal),

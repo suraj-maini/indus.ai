@@ -1,16 +1,17 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
     alias(libs.plugins.kotlinAndroidKsp)
     alias(libs.plugins.hiltAndroid)
 }
 
 android {
-    namespace = "boilerplate.jetpackcompose.app"
+    namespace = "com.boilerplate.app"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "boilerplate.jetpackcompose.app"
+        applicationId = "com.boilerplate.app"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -42,6 +43,9 @@ android {
         compose = true
         buildConfig = true
     }
+    kapt {
+        correctErrorTypes = true
+    }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
     }
@@ -67,12 +71,13 @@ dependencies {
 
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.appcompat)
-//    implementation(libs.kotlin.stdlib)
+    implementation(libs.kotlin.stdlib)
 
 
     //Hilt
     implementation(libs.hilt.android)
-    ksp(libs.hilt.android.compiler)
+    kapt(libs.hilt.android.compiler)
+    kapt(libs.dagger.compiler)
 
     //Retrofit
     implementation(libs.retrofit.jakewharton)
@@ -86,12 +91,12 @@ dependencies {
 
     implementation(libs.okhttp)
     implementation(libs.moshi)
-    ksp(libs.moshi.kotlin.codegen)
+    kapt(libs.moshi.kotlin.codegen)
     implementation(libs.moshi.kotlin)
     implementation(libs.moshi.adapters)
 
     implementation(libs.glide)
-    ksp(libs.glide.compiler)
+    kapt(libs.glide.compiler)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
