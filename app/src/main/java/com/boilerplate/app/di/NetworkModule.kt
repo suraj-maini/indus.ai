@@ -37,7 +37,7 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideBaseUrl(): String = "todo.com"
+    fun provideBaseUrl(): String = "https://hassanrsiddiqi.com/"
 
     @Singleton
     @Provides

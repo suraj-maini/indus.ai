@@ -1,13 +1,12 @@
-package com.boilerplate.app.data.service
+package com.boilerplate.app.domain.repository.auth
 
 import com.boilerplate.app.data.models.auth.model.LoginResponse
 import com.boilerplate.app.data.models.auth.model.SignupResult
 import com.boilerplate.app.data.models.auth.request.LogInRequest
 import com.boilerplate.app.domain.utils.BaseResponse
-import retrofit2.http.Body
-import retrofit2.http.POST
+import com.boilerplate.app.domain.utils.Resource
 
-interface ApiService {
-    @POST("api/mob/login")
-    suspend fun logIn(@Body request: LogInRequest): BaseResponse<SignupResult>
+interface AuthRepository {
+
+  suspend fun logIn(request: LogInRequest): Resource<BaseResponse<SignupResult>>
 }

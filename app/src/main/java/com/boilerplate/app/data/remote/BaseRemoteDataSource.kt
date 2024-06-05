@@ -35,7 +35,7 @@ open class BaseRemoteDataSource @Inject constructor() {
           return if (apiResponse.result as Boolean) {
             Resource.Success(apiResponse)
           } else {
-            Resource.Failure(FailureStatus.API_FAIL, 200, apiResponse.detail)
+            Resource.Failure(FailureStatus.API_FAIL, 200, apiResponse.message)
           }
         }
         else -> {
@@ -56,7 +56,7 @@ open class BaseRemoteDataSource @Inject constructor() {
               val jsonAdapter = moshi.adapter(BaseResponse::class.java)
               val response = jsonAdapter.fromJson(apiResponse)
 
-              return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), response?.detail)
+              return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), response?.message)
             }
             throwable.code() == 401 -> {
 
