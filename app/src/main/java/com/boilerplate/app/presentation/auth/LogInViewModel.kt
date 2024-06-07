@@ -3,12 +3,15 @@ package com.boilerplate.app.presentation.auth
 import androidx.lifecycle.viewModelScope
 import com.boilerplate.app.base.BaseViewModel
 import com.boilerplate.app.data.models.auth.model.LoginResponse
-import com.boilerplate.app.data.models.auth.model.SignupResult
 import com.boilerplate.app.data.models.auth.request.LogInRequest
 import com.boilerplate.app.domain.usecase.auth.LogInUseCase
-import com.boilerplate.app.domain.utils.BaseResponse
+import com.boilerplate.app.data.BaseResponse
+import com.boilerplate.app.data.models.auth.model.SignUpResponse
+import com.boilerplate.app.data.models.auth.request.SignUpRequest
+import com.boilerplate.app.domain.usecase.auth.SignUpUseCase
 import com.boilerplate.app.domain.utils.Resource
 import com.boilerplate.app.domain.utils.SingleLiveEvent
+//import com.boilerplate.app.utils.EncryptedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.catch
@@ -18,32 +21,51 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LogInViewModel @Inject constructor(
-  private val logInUseCase: LogInUseCase
+    private val logInUseCase: LogInUseCase,
+    private val signupUseCase: SignUpUseCase
 ) : BaseViewModel() {
 
-  var request = LogInRequest()
-  private val _logInResponse = MutableStateFlow<Resource<BaseResponse<SignupResult>>>(Resource.Default)
-  val logInResponse = _logInResponse
+    var loginRequest = LogInRequest()
+    var signUpRequest = SignUpRequest()
+    private val _logInResponse =
+        MutableStateFlow<Resource<BaseResponse<LoginResponse>>>(Resource.Default)
+    val logInResponse = _logInResponse
 
-  var togglePassword = SingleLiveEvent<Void>()
-  var openForgotPassword = SingleLiveEvent<Void>()
+    var togglePassword = SingleLiveEvent<Void>()
+    var openForgotPassword = SingleLiveEvent<Void>()
 
-  var validationException = SingleLiveEvent<Int>()
+    var validationException = SingleLiveEvent<Int>()
 
-  fun onPasswordToggleClicked() {
-    togglePassword.call()
-  }
+    fun onPasswordToggleClicked() {
+        togglePassword.call()
+    }
 
-  fun onForgotPasswordClicked() {
-    openForgotPassword.call()
-  }
+    fun onForgotPasswordClicked() {
+        openForgotPassword.call()
+    }
 
-  fun onLogInClicked() {
-    logInUseCase(request)
-      .catch { exception -> validationException.value = exception.message?.toInt() }
-      .onEach { result ->
-        _logInResponse.value = result
-      }
-      .launchIn(viewModelScope)
-  }
+    fun onLogInClicked() {
+        logInUseCase(loginRequest)
+            .catch { exception -> validationException.value = exception.message?.toInt() }
+            .onEach { loginResponse ->
+
+                _logInResponse.value = loginResponse
+            }
+            .launchIn(viewModelScope)
+    }
+
+
+    private val _signUpResponse =
+        MutableStateFlow<Resource<BaseResponse<SignUpResponse>>>(Resource.Default)
+    val signUpResponse = _signUpResponse
+
+    fun onSignUpClicked() {
+        signupUseCase(signUpRequest)
+            .catch { exception -> validationException.value = exception.message?.toInt() }
+            .onEach { signUpResponse ->
+
+                _signUpResponse.value = signUpResponse
+            }
+            .launchIn(viewModelScope)
+    }
 }

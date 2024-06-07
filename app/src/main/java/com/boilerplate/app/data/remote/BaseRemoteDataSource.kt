@@ -1,6 +1,6 @@
 package com.boilerplate.app.data.remote
 
-import com.boilerplate.app.domain.utils.BaseResponse
+import com.boilerplate.app.data.BaseResponse
 import com.boilerplate.app.domain.utils.ErrorResponse
 import com.boilerplate.app.domain.utils.FailureStatus
 import com.boilerplate.app.domain.utils.Resource

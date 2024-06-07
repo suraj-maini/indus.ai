@@ -1,10 +1,11 @@
 package com.boilerplate.app.data.models.auth.model
 
+
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-data class LoginResponse(
+data class SignUpResponse(
     @Json(name = "avatar_url")
     var avatarUrl: Any? = null,
     @Json(name = "email")
@@ -12,7 +13,7 @@ data class LoginResponse(
     @Json(name = "first_name")
     var firstName: String? = null,
     @Json(name = "id")
-    var id: Any? = null,
+    var id: Int? = null,
     @Json(name = "is_allow")
     var isAllow: Boolean? = null,
     @Json(name = "is_blocked")

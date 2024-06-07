@@ -1,6 +1,7 @@
 package com.boilerplate.app.presentation.auth
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +12,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.boilerplate.app.presentation.composables.PrimaryButton
 import com.boilerplate.app.theme.AppTheme
 
@@ -37,13 +36,25 @@ fun LoginScreen(loginViewModel: LogInViewModel = hiltViewModel()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(AppTheme.colorScheme.background)
+                    .background(AppTheme.colorScheme.background),
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 PrimaryButton(modifier = Modifier.fillMaxWidth()
                     .height(45.dp), label = "Sign Up") {
-                     loginViewModel.request.email = "aliabbas2@gmail.com"
-                     loginViewModel.request.password = "password"
-                     loginViewModel.onLogInClicked()
+                     loginViewModel.signUpRequest.firstName = "Waqar"
+                     loginViewModel.signUpRequest.lastName = "Vicky"
+                     loginViewModel.signUpRequest.email = "waqarv713@gmail.com"
+                     loginViewModel.signUpRequest.plan = "standard"
+                     loginViewModel.signUpRequest.password = "password"
+                     loginViewModel.signUpRequest.passwordConfirmation = "password"
+                     loginViewModel.onSignUpClicked()
+                }
+
+                PrimaryButton(modifier = Modifier.fillMaxWidth()
+                    .height(45.dp), label = "Login Up") {
+                    loginViewModel.loginRequest.email = "aliabbas2@gmail.com"
+                    loginViewModel.loginRequest.password = "password"
+                    loginViewModel.onLogInClicked()
                 }
             }
         }

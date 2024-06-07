@@ -2,9 +2,11 @@ package com.boilerplate.app.di
 
 import android.app.Application
 import android.content.Context
+import com.boilerplate.app.utils.EncryptedPrefs
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
@@ -16,5 +18,11 @@ object AppModule {
     @Singleton
     fun provideApplicationContext(application: Application): Context =
         application.applicationContext
+
+    @Provides
+    @Singleton
+    fun provideEncryptedPrefs(@ApplicationContext context: Context): EncryptedPrefs {
+        return EncryptedPrefs(context)
+    }
 
 }

@@ -70,11 +70,14 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.lifecycle.hilt.navigation.compose)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.ktx)
-
+    implementation(libs.androidx.encrypted.prefs.security.crypto)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.kotlin.stdlib)
+    implementation(libs.androidx.savedstate.savedstate)
+    implementation(libs.androidx.lifecycle.viewmodel.savedstate)
 
 
     //Hilt
