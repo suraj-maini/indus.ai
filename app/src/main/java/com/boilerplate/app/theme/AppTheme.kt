@@ -44,6 +44,7 @@ private val typography = AppTypography(
     ),
     paragraph = TextStyle(
         fontFamily = DMSansFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
     labelLarge = TextStyle(
@@ -53,10 +54,12 @@ private val typography = AppTypography(
     ),
     labelNormal = TextStyle(
         fontFamily = DMSansFontFamily,
+        fontWeight = FontWeight.Normal,
         fontSize = 14.sp
     ),
     labelSmall = TextStyle(
         fontFamily = DMSansFontFamily,
+        fontWeight = FontWeight.Light,
         fontSize = 12.sp
     )
 )

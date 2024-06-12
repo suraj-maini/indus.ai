@@ -1,4 +1,4 @@
-package com.boilerplate.app.presentation.auth
+package com.boilerplate.app.presentation.screens.auth
 
 import androidx.lifecycle.viewModelScope
 import com.boilerplate.app.base.BaseViewModel

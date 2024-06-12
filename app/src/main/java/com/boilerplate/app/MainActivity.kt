@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.modifier.modifierLocalMapOf
 import androidx.compose.ui.tooling.preview.Preview
-import com.boilerplate.app.presentation.auth.LoginScreen
+import com.boilerplate.app.presentation.navigationcomponent.MainApp
+import com.boilerplate.app.presentation.screens.auth.LoginScreen
 import com.boilerplate.app.theme.AppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,7 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize(),
+                /*Scaffold(modifier = Modifier.fillMaxSize(),
                     containerColor = AppTheme.colorScheme.background) { innerPadding ->
                     Column(
                         modifier = Modifier
@@ -33,7 +35,14 @@ class MainActivity : ComponentActivity() {
                     ) {
                         LoginScreen()
                     }
+                }*/
+
+
+                // A surface container using the 'background' color from the theme
+                Surface(modifier = Modifier.fillMaxSize(), color = AppTheme.colorScheme.background) {
+                    MainApp()
                 }
+
             }
         }
     }
