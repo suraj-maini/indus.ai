@@ -11,24 +11,30 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.boilerplate.app.presentation.composables.ImperfectCircleShape
+import com.boilerplate.app.presentation.components.ImperfectCircleShape
 
 private val darkColorScheme = AppColorScheme(
     background = Black,
-    onBackground = Purple80,
+    onBackground = White,
+    onBackgroundGray = BackgroundLightGray,
     primary = Red,
     onPrimary = White,
-    secondary = Pink40,
-    onSecondary = Pink80,
+    secondary = LightBlack,
+    onSecondary = MidLightGray,
+    onSecondaryIcon = MidDarkGray,
+    workButtonBackground = DarkerRed,
 )
 
 private val lightColorScheme = AppColorScheme(
     background = Color.White,
-    onBackground = Purple40,
+    onBackground = Black,
+    onBackgroundGray = BackgroundGray,
     primary = Red,
     onPrimary = White,
-    secondary = Pink80,
-    onSecondary = Pink40,
+    secondary = LighterGray,
+    onSecondary = LightGray,
+    onSecondaryIcon = DarkGray,
+    workButtonBackground = LighterRed,
 )
 
 private val typography = AppTypography(
@@ -41,6 +47,11 @@ private val typography = AppTypography(
         fontFamily = DMSansFontFamily,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
+    ),
+    titleSmall = TextStyle(
+        fontFamily = DMSansFontFamily,
+        fontWeight = FontWeight.Medium,
+        fontSize = 14.sp
     ),
     paragraph = TextStyle(
         fontFamily = DMSansFontFamily,

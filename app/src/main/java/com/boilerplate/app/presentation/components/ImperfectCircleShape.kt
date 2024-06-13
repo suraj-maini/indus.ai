@@ -1,4 +1,4 @@
-package com.boilerplate.app.presentation.composables
+package com.boilerplate.app.presentation.components
 
 import android.graphics.Matrix
 import androidx.compose.ui.geometry.Offset

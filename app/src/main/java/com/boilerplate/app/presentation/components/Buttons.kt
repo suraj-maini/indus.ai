@@ -1,11 +1,8 @@
-package com.boilerplate.app.presentation.composables
+package com.boilerplate.app.presentation.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
@@ -48,15 +45,38 @@ fun SecondaryButton(
         modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = AppTheme.colorScheme.secondary,
-            contentColor = AppTheme.colorScheme.onSecondary
+            containerColor = AppTheme.colorScheme.background,
+            contentColor = AppTheme.colorScheme.primary
         ),
         shape = AppTheme.shape.button,
-        border = BorderStroke(2.dp, AppTheme.colorScheme.onSecondary)
+        border = BorderStroke(2.dp, AppTheme.colorScheme.primary)
     ) {
         Text(
             text = label,
-            style = AppTheme.typography.labelLarge
+            style = AppTheme.typography.labelNormal
+        )
+    }
+}
+
+@Composable
+fun RedBGSecondaryButton(
+    modifier: Modifier = Modifier,
+    label: String,
+    onClick: () -> Unit
+) {
+    OutlinedButton(
+        modifier = modifier,
+        onClick = onClick,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = AppTheme.colorScheme.workButtonBackground,
+            contentColor = AppTheme.colorScheme.primary
+        ),
+        shape = AppTheme.shape.button,
+        border = BorderStroke(2.dp, AppTheme.colorScheme.primary)
+    ) {
+        Text(
+            text = label,
+            style = AppTheme.typography.labelNormal
         )
     }
 }
@@ -65,7 +85,12 @@ fun SecondaryButton(
 @Preview(uiMode = UI_MODE_NIGHT_YES, showBackground = true)
 @Composable
 private fun PreviewPrimaryButton() {
-    AppTheme {
+
+    /*PrimaryButton(label = "Primary"){}*/
+    SecondaryButton(label = "Secondary") {
+    }
+
+    /*AppTheme {
         Column(
             modifier = Modifier
                 .padding(AppTheme.size.medium),
@@ -80,5 +105,5 @@ private fun PreviewPrimaryButton() {
                 onClick = {}
             )
         }
-    }
+    }*/
 }

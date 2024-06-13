@@ -13,16 +13,20 @@ import androidx.compose.ui.unit.Dp
 data class AppColorScheme(
     val background: Color,
     val onBackground: Color,
+    val onBackgroundGray: Color,
     val primary: Color,
     val onPrimary: Color,
     val secondary: Color,
-    val onSecondary: Color
+    val onSecondary: Color,
+    val onSecondaryIcon: Color,
+    val workButtonBackground: Color,
 )
 
 //typography
 data class AppTypography(
     val titleLarge: TextStyle,
     val titleNormal: TextStyle,
+    val titleSmall: TextStyle,
     val paragraph: TextStyle,
     val labelLarge: TextStyle,
     val labelNormal: TextStyle,
@@ -48,10 +52,13 @@ val LocalAppColorScheme = staticCompositionLocalOf {
     AppColorScheme(
         background = Color.Unspecified,
         onBackground = Color.Unspecified,
+        onBackgroundGray = Color.Unspecified,
         primary = Color.Unspecified,
         onPrimary = Color.Unspecified,
         secondary = Color.Unspecified,
-        onSecondary = Color.Unspecified
+        onSecondary = Color.Unspecified,
+        onSecondaryIcon = Color.Unspecified,
+        workButtonBackground = Color.Unspecified,
     )
 }
 
@@ -62,7 +69,8 @@ val LocalAppTypography = staticCompositionLocalOf {
         paragraph = TextStyle.Default,
         labelLarge = TextStyle.Default,
         labelNormal = TextStyle.Default,
-        labelSmall = TextStyle.Default
+        labelSmall = TextStyle.Default,
+        titleSmall = TextStyle.Default
     )
 }
 

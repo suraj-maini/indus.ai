@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">Jetpack Compose Boilerplate Code</string>
+    <string name="app_name">Indus.ai</string>
+    <string name="hide_password">Hide Passwordk</string>
+    <string name="show_password">Show Password</string>
 </resources>
