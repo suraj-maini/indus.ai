@@ -1,6 +1,7 @@
 package com.boilerplate.app.presentation.components
 
 import android.content.res.Configuration
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
@@ -10,24 +11,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
@@ -37,13 +33,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -53,13 +46,13 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.boilerplate.app.R
 import com.boilerplate.app.theme.AppTheme
-import com.boilerplate.app.theme.Black
 
 
 @Preview(
@@ -93,10 +86,11 @@ fun TextComponent(
 fun TextButtonComponent(
     modifier: Modifier = Modifier,
     value: String,
-    color: Color = AppTheme.colorScheme.onBackground
+    color: Color = AppTheme.colorScheme.onBackground,
+    onClick: () -> Unit
 ) {
     TextButton(
-        onClick = { /*TODO*/ },
+        onClick = { onClick.invoke() },
         modifier = modifier
     ) {
         Text(
@@ -126,14 +120,14 @@ fun TextSmallTitleComponent(
 }
 
 @Composable
-fun LoginTextComponent(modifier: Modifier = Modifier, value: String) {
+fun LoginTextComponent(modifier: Modifier = Modifier, boldText: String, italicText: String) {
 
     val annotatedString = buildAnnotatedString {
         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
-        append("Log ")
+        append("$boldText ")
         pop()
         pushStyle(SpanStyle(fontWeight = FontWeight.Normal, fontStyle = FontStyle.Italic))
-        append("In")
+        append(italicText)
         pop()
     }
 
@@ -278,6 +272,48 @@ fun PasswordTextFieldComponent(
         },
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
         isError = errorStatus
+    )
+}
+
+
+@Composable
+fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (String) -> Unit) {
+    val initialText =
+        if (tryingToLogin) "Remember password? " else "Already have an account? "
+    val loginText = if (tryingToLogin) "Login" else "Register"
+
+    val annotatedString = buildAnnotatedString {
+//        append(initialText)
+        withStyle(style = SpanStyle(color = AppTheme.colorScheme.onBackgroundGray)) {
+            pushStringAnnotation(tag = initialText, annotation = initialText)
+            append(initialText)
+        }
+        withStyle(style = SpanStyle(color = AppTheme.colorScheme.primary)) {
+            pushStringAnnotation(tag = loginText, annotation = loginText)
+            append(loginText)
+        }
+    }
+
+    ClickableText(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 40.dp),
+        style = AppTheme.typography.labelNormal.copy(
+            textAlign = TextAlign.Center
+        ),
+        text = annotatedString,
+        onClick = { offset ->
+
+            annotatedString.getStringAnnotations(offset, offset)
+                .firstOrNull()?.also { span ->
+                    Log.d("ClickableTextComponent", "{${span.item}}")
+
+                    if (span.item == loginText) {
+                        onTextSelected(span.item)
+                    }
+                }
+
+        },
     )
 }
 

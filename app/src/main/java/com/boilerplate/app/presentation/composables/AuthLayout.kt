@@ -15,7 +15,7 @@ import com.boilerplate.app.theme.AppTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthLayout(
-    isLogin: Boolean,
+    isLogin: Boolean?,
     onButtonClick: () -> Unit,
     content: @Composable (PaddingValues) -> Unit
 ) {
@@ -29,10 +29,11 @@ fun AuthLayout(
                         label = "Login",
                         onClick = { *//* Handle action click *//* })
                     Spacer(modifier = Modifier.width(7.dp))*/
-                    SecondaryButton(
-                        label = if (isLogin) "Signup" else "Login",
-                        onClick = { onButtonClick.invoke() })
-
+                    isLogin?.let {
+                        SecondaryButton(
+                            label = if (isLogin) "Signup" else "Login",
+                            onClick = { onButtonClick.invoke() })
+                    }
                 }
             )
         }

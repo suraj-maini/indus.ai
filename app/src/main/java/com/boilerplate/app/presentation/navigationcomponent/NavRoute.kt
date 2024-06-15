@@ -2,6 +2,7 @@ package com.boilerplate.app.presentation.navigationcomponent
 
 sealed class NavRoute(val route: String) {
     data object Login : NavRoute("home")
+    data object ForgotPassword : NavRoute("forgotPassword")
     data object Signup : NavRoute("signup"){
         val id = "id"
         val showDetails = "showDetails"

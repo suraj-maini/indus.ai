@@ -46,7 +46,8 @@ fun LoginScreen(
 
             LoginTextComponent(
                 modifier = Modifier.fillMaxWidth(),
-                value = "Login In"
+                boldText = "Login",
+                italicText = "In"
             )
 
             TextComponent(
@@ -72,7 +73,9 @@ fun LoginScreen(
                 modifier = Modifier.align(Alignment.End),
                 color = AppTheme.colorScheme.primary,
                 value = "Forgot Password?"
-            )
+            ){
+                navController.navigate(NavRoute.ForgotPassword.route)
+            }
 
             VerticalSpacer()
 
