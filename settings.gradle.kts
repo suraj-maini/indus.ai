@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Jetpack Compose Boilerplate Code"
+rootProject.name = "Indus.ai"
 include(":app")
  
