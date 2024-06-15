@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -15,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +27,7 @@ import com.boilerplate.app.presentation.components.*
 import com.boilerplate.app.presentation.composables.AuthLayout
 import com.boilerplate.app.presentation.navigationcomponent.NavRoute
 import com.boilerplate.app.theme.AppTheme
+import com.boilerplate.app.theme.Dimens
 
 @Composable
 fun LoginScreen(
@@ -39,7 +43,7 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(16.dp)
+                .padding(Dimens.defaultScreenPadding)
                 .background(AppTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -53,7 +57,7 @@ fun LoginScreen(
             TextComponent(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.colorScheme.onBackgroundGray,
-                value = "Welcome back to ".plus(stringResource(id = R.string.app_name))
+                value = "Welcome to ".plus(stringResource(id = R.string.app_name))
             )
             VerticalSpacer(size = 30.dp)
 
@@ -61,13 +65,18 @@ fun LoginScreen(
                 value = "Email",
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
-            PrimaryTextFieldComponent("Email")
+            PrimaryTextFieldComponent(modifier = Modifier
+                .fillMaxWidth(),
+                placeholderText = "Email",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+            )
 
             TextSmallTitleComponent(
                 value = "Password",
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
-            PasswordTextFieldComponent("Password")
+            PasswordTextFieldComponent("Password",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done))
 
             TextButtonComponent(
                 modifier = Modifier.align(Alignment.End),

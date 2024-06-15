@@ -49,6 +49,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.boilerplate.app.R
@@ -63,7 +64,7 @@ import com.boilerplate.app.theme.AppTheme
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewTheComposable() {
-    PrimaryTextFieldComponent("Email", onTextChanged = {})
+    PrimaryTextFieldComponent(modifier = Modifier, placeholderText = "Email", onTextChanged = {})
 }
 
 @Composable
@@ -115,7 +116,7 @@ fun TextSmallTitleComponent(
         style = AppTheme.typography.titleSmall.copy(
             color = color
         ),
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Start
     )
 }
 
@@ -144,9 +145,11 @@ fun LoginTextComponent(modifier: Modifier = Modifier, boldText: String, italicTe
 
 @Composable
 fun PrimaryTextFieldComponent(
+    modifier: Modifier = Modifier,
     placeholderText: String,
-    onTextChanged: (String) -> Unit = {},
-    errorStatus: Boolean = false
+    errorStatus: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+    onTextChanged: (String) -> Unit = {}
 ) {
 
     val textValue = remember {
@@ -155,8 +158,7 @@ fun PrimaryTextFieldComponent(
     val localFocusManager = LocalFocusManager.current
 
     TextField(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = modifier,
         shape = AppTheme.shape.button,
         placeholder = {
             TextComponent(
@@ -180,7 +182,7 @@ fun PrimaryTextFieldComponent(
             errorContainerColor = AppTheme.colorScheme.secondary,
             disabledContainerColor = AppTheme.colorScheme.secondary
         ),
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        keyboardOptions = keyboardOptions,
         singleLine = true,
         maxLines = 1,
         value = textValue.value,
@@ -195,8 +197,9 @@ fun PrimaryTextFieldComponent(
 @Composable
 fun PasswordTextFieldComponent(
     placeholderText: String,
-    onTextSelected: (String) -> Unit = {},
-    errorStatus: Boolean = false
+    errorStatus: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+    onTextSelected: (String) -> Unit = {}
 ) {
 
     val localFocusManager = LocalFocusManager.current
@@ -234,10 +237,7 @@ fun PasswordTextFieldComponent(
             errorContainerColor = AppTheme.colorScheme.secondary,
             disabledContainerColor = AppTheme.colorScheme.secondary
         ),
-        keyboardOptions = KeyboardOptions(
-            keyboardType = KeyboardType.Password,
-            imeAction = ImeAction.Done
-        ),
+        keyboardOptions = keyboardOptions,
         singleLine = true,
         keyboardActions = KeyboardActions {
             localFocusManager.clearFocus()
@@ -277,25 +277,37 @@ fun PasswordTextFieldComponent(
 
 
 @Composable
-fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (String) -> Unit) {
-    val initialText =
-        if (tryingToLogin) "Remember password? " else "Already have an account? "
-    val loginText = if (tryingToLogin) "Login" else "Register"
-
+fun ClickableAuthTextComponent(
+    modifier: Modifier = Modifier,
+    textSize: TextUnit = 14.sp,
+    initialText: String,
+    clickAbleText: String,
+    onTextSelected: (String) -> Unit
+) {
     val annotatedString = buildAnnotatedString {
-//        append(initialText)
-        withStyle(style = SpanStyle(color = AppTheme.colorScheme.onBackgroundGray)) {
+        withStyle(
+            style = AppTheme.typography.labelNormal.copy(
+                fontSize = textSize,
+                color = AppTheme.colorScheme.onBackgroundGray
+            ).toSpanStyle()
+        ) {
             pushStringAnnotation(tag = initialText, annotation = initialText)
             append(initialText)
         }
-        withStyle(style = SpanStyle(color = AppTheme.colorScheme.primary)) {
-            pushStringAnnotation(tag = loginText, annotation = loginText)
-            append(loginText)
+        append(" ")
+        withStyle(
+            style = AppTheme.typography.labelNormal.copy(
+                fontSize = textSize,
+                color = AppTheme.colorScheme.primary
+            ).toSpanStyle()
+        ) {
+            pushStringAnnotation(tag = clickAbleText, annotation = clickAbleText)
+            append(clickAbleText)
         }
     }
 
     ClickableText(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .heightIn(min = 40.dp),
         style = AppTheme.typography.labelNormal.copy(
@@ -308,7 +320,7 @@ fun ClickableLoginTextComponent(tryingToLogin: Boolean = true, onTextSelected: (
                 .firstOrNull()?.also { span ->
                     Log.d("ClickableTextComponent", "{${span.item}}")
 
-                    if (span.item == loginText) {
+                    if (span.item == clickAbleText) {
                         onTextSelected(span.item)
                     }
                 }

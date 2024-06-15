@@ -8,22 +8,23 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.boilerplate.app.R
-import com.boilerplate.app.presentation.components.ClickableLoginTextComponent
+import com.boilerplate.app.presentation.components.ClickableAuthTextComponent
 import com.boilerplate.app.presentation.components.LoginTextComponent
 import com.boilerplate.app.presentation.components.PrimaryButton
 import com.boilerplate.app.presentation.components.PrimaryTextFieldComponent
-import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
 import com.boilerplate.app.theme.AppTheme
+import com.boilerplate.app.theme.Dimens
 
 @Composable
 fun ForgotPassScreen(
@@ -37,7 +38,7 @@ fun ForgotPassScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
-                .padding(16.dp)
+                .padding(Dimens.defaultScreenPadding)
                 .background(AppTheme.colorScheme.background),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
@@ -54,7 +55,11 @@ fun ForgotPassScreen(
                 value = "Email",
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
-            PrimaryTextFieldComponent("Email")
+            PrimaryTextFieldComponent(modifier = Modifier
+                .fillMaxWidth(),
+                placeholderText = "Email",
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done)
+            )
 
             VerticalSpacer()
 
@@ -68,7 +73,7 @@ fun ForgotPassScreen(
 
             VerticalSpacer()
 
-            ClickableLoginTextComponent(true, onTextSelected = {
+            ClickableAuthTextComponent(initialText = "Remember password?", clickAbleText = "Login", onTextSelected = {
                 navController.navigateUp()
             })
 
