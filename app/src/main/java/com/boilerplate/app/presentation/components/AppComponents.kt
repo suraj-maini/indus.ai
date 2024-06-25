@@ -3,6 +3,7 @@ package com.boilerplate.app.presentation.components
 import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -159,52 +160,53 @@ fun PrimaryTextFieldComponent(
     }
     val localFocusManager = LocalFocusManager.current
 
-    TextField(
-        modifier = modifier,
-        shape = AppTheme.shape.button,
-        placeholder = {
-            TextComponent(
-                value = placeholderText,
-                color = AppTheme.colorScheme.onSecondary
-            )
-        },
-        label = null,
-        textStyle = LocalTextStyle.current.copy(color = AppTheme.colorScheme.onBackground),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            errorIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = AppTheme.colorScheme.onBackground,
-            focusedTextColor = AppTheme.colorScheme.onBackground,
-            unfocusedTextColor = AppTheme.colorScheme.onBackground,
-            errorTextColor = AppTheme.colorScheme.primary,
-            focusedContainerColor = AppTheme.colorScheme.secondary,
-            unfocusedContainerColor = AppTheme.colorScheme.secondary,
-            errorContainerColor = AppTheme.colorScheme.secondary,
-            disabledContainerColor = AppTheme.colorScheme.secondary
-        ),
-        keyboardOptions = keyboardOptions,
-        singleLine = true,
-        maxLines = 1,
-        value = textValue.value,
-        onValueChange = {
-            textValue.value = it
-            onTextChanged(it)
-        },
-        isError = !errorStatus,
-        supportingText = {
-            if (!errorStatus) {
-                errorMessage?.let {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = it,
-                        color = AppTheme.colorScheme.primary
-                    )
-                }
+    Column(modifier = modifier) {
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            shape = AppTheme.shape.button,
+            placeholder = {
+                TextComponent(
+                    value = placeholderText,
+                    color = AppTheme.colorScheme.onSecondary
+                )
+            },
+            label = null,
+            textStyle = LocalTextStyle.current.copy(color = AppTheme.colorScheme.onBackground),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = AppTheme.colorScheme.onBackground,
+                focusedTextColor = AppTheme.colorScheme.onBackground,
+                unfocusedTextColor = AppTheme.colorScheme.onBackground,
+                errorTextColor = AppTheme.colorScheme.primary,
+                focusedContainerColor = AppTheme.colorScheme.secondary,
+                unfocusedContainerColor = AppTheme.colorScheme.secondary,
+                errorContainerColor = AppTheme.colorScheme.secondary,
+                disabledContainerColor = AppTheme.colorScheme.secondary
+            ),
+            keyboardOptions = keyboardOptions,
+            singleLine = true,
+            maxLines = 1,
+            value = textValue.value,
+            onValueChange = {
+                textValue.value = it
+                onTextChanged(it)
+            }
+        )
+        if (!errorStatus) {
+            if (!errorMessage.isNullOrEmpty()) {
+                Text(
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(top = 4.dp, start = 16.dp, end = 16.dp),
+                    text = errorMessage,
+                    style = AppTheme.typography.labelSmall,
+                    color = AppTheme.colorScheme.primary
+                )
             }
         }
-    )
+    }
 }
 
 @Composable

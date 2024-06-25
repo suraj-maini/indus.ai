@@ -36,7 +36,6 @@ class LogInViewModel @Inject constructor(
 
     var allValidationsPassed = mutableStateOf(false)
 
-    var loginInProgress = mutableStateOf(false)
 
 
     fun onEvent(event: LoginUIEvent) {
@@ -62,7 +61,6 @@ class LogInViewModel @Inject constructor(
     }
 
     private fun login() {
-        loginInProgress.value = true
         val email = loginUIState.value.email
         val password = loginUIState.value.password
 
@@ -84,9 +82,7 @@ class LogInViewModel @Inject constructor(
                         _logInnResponse.value = LoginUIState(data = loginResponse.value, isLoading = false)
                     }
                 }
-
-                loginInProgress.value = false
-                _logInResponse.value = loginResponse
+//                _logInResponse.value = loginResponse
             }
             .launchIn(viewModelScope)
     }
