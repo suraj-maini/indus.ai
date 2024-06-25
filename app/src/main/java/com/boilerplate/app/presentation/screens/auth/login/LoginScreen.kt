@@ -1,5 +1,6 @@
-package com.boilerplate.app.presentation.screens.auth
+package com.boilerplate.app.presentation.screens.auth.login
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,8 +11,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -23,20 +30,72 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.boilerplate.app.R
-import com.boilerplate.app.presentation.components.*
+import com.boilerplate.app.domain.utils.FailureStatus
+import com.boilerplate.app.domain.utils.Resource
+import com.boilerplate.app.presentation.components.LoginTextComponent
+import com.boilerplate.app.presentation.components.PasswordTextFieldComponent
+import com.boilerplate.app.presentation.components.PrimaryButton
+import com.boilerplate.app.presentation.components.PrimaryTextFieldComponent
+import com.boilerplate.app.presentation.components.TextButtonComponent
+import com.boilerplate.app.presentation.components.TextComponent
+import com.boilerplate.app.presentation.components.TextSmallTitleComponent
+import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
 import com.boilerplate.app.presentation.navigationcomponent.NavRoute
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     navController: NavController,
     loginViewModel: LogInViewModel = hiltViewModel()
 ) {
-    AuthLayout(isLogin = true, onButtonClick = {
-        navController.navigate(NavRoute.Signup.withArgs(123.toString(), "ali"))
-    }) {
+    var canShowSnackBar = remember { mutableStateOf(false) }
+    var snackBarMessage = remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf(Resource.Failure(FailureStatus.NOTHING)) }
+    val coroutineScope = rememberCoroutineScope()
+
+    DisposableEffect(Unit) {
+        onDispose {
+            // Cancel the coroutine scope when the Composable is detached
+            coroutineScope.cancel()
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        loginViewModel.initializeState()
+        coroutineScope.launch {
+            loginViewModel.logInnResponse.collect { loginState: LoginUIState ->
+                isLoading = loginState.isLoading
+                if (loginState.error != null && loginState.error.failureStatus != FailureStatus.NOTHING) {
+                    Log.d("LoginScreenen", "Failure".plus(loginState.error.failureStatus))
+                    error = loginState.error
+                    canShowSnackBar.value = true
+                    snackBarMessage.value = loginState.error.message.toString()
+                } else {
+                    canShowSnackBar.value = false
+                    snackBarMessage.value = ""
+                }
+                loginState.data?.let {
+//                    isLoading = false
+                    Log.d("LoginScreenen", "Success")
+                }
+            }
+        }
+    }
+
+    AuthLayout(
+        isLogin = true,
+        isLoading = isLoading,
+        canShowSnackBar = canShowSnackBar,
+        snackBarMessage = snackBarMessage,
+        onButtonClick1 = error,
+        onButtonClick = {
+            navController.navigate(NavRoute.Signup.withArgs(123.toString(), "ali"))
+        }) {
         val scrollState = rememberScrollState()
 
         Column(
@@ -50,39 +109,58 @@ fun LoginScreen(
 
             LoginTextComponent(
                 modifier = Modifier.fillMaxWidth(),
-                boldText = "Login",
-                italicText = "In"
+                boldText = stringResource(R.string.log),
+                italicText = stringResource(R.string.inn)
             )
 
             TextComponent(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.colorScheme.onBackgroundGray,
-                value = "Welcome to ".plus(stringResource(id = R.string.app_name))
+                value = stringResource(R.string.welcome_to).plus(stringResource(id = R.string.app_name))
             )
             VerticalSpacer(size = 30.dp)
 
             TextSmallTitleComponent(
-                value = "Email",
+                value = stringResource(R.string.email),
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
-            PrimaryTextFieldComponent(modifier = Modifier
-                .fillMaxWidth(),
-                placeholderText = "Email",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Next)
+            PrimaryTextFieldComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                placeholderText = stringResource(id = R.string.email),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Next
+                ),
+                onTextChanged = {
+                    loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
+                },
+                errorStatus = loginViewModel.loginUIState.value.emailError,
+                errorMessage = loginViewModel.loginUIState.value.emailErrorMsg
             )
 
             TextSmallTitleComponent(
-                value = "Password",
+                value = stringResource(R.string.password),
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
-            PasswordTextFieldComponent("Password",
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password, imeAction = ImeAction.Done))
+            PasswordTextFieldComponent(
+                placeholderText = stringResource(id = R.string.password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                onTextSelected = {
+                    loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
+                },
+                errorStatus = loginViewModel.loginUIState.value.passwordError,
+                errorMessage = loginViewModel.loginUIState.value.passwordErrorMsg
+            )
 
             TextButtonComponent(
                 modifier = Modifier.align(Alignment.End),
                 color = AppTheme.colorScheme.primary,
-                value = "Forgot Password?"
-            ){
+                value = stringResource(R.string.forgot_password)
+            ) {
                 navController.navigate(NavRoute.ForgotPassword.route)
             }
 
@@ -91,15 +169,19 @@ fun LoginScreen(
             PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(45.dp), label = "Login"
+                    .height(45.dp),
+                label = stringResource(R.string.login)
             ) {
-                loginViewModel.signUpRequest.firstName = "Waqar"
-                loginViewModel.signUpRequest.lastName = "Vicky"
-                loginViewModel.signUpRequest.email = "waqarv713@gmail.com"
-                loginViewModel.signUpRequest.plan = "standard"
-                loginViewModel.signUpRequest.password = "password"
-                loginViewModel.signUpRequest.passwordConfirmation = "password"
-                loginViewModel.onSignUpClicked()
+
+                loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
+
+//                loginViewModel.signUpRequest.firstName = "Waqar"
+//                loginViewModel.signUpRequest.lastName = "Vicky"
+//                loginViewModel.signUpRequest.email = "waqarv713@gmail.com"
+//                loginViewModel.signUpRequest.plan = "standard"
+//                loginViewModel.signUpRequest.password = "password"
+//                loginViewModel.signUpRequest.passwordConfirmation = "password"
+//                loginViewModel.onSignUpClicked()
 
 //                navController.navigate(NavRoute.Signup.withArgs(123.toString(), "ali"))
 //                    navController.navigate(NavRoute.Signup.route)

@@ -32,6 +32,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
@@ -148,11 +149,12 @@ fun PrimaryTextFieldComponent(
     modifier: Modifier = Modifier,
     placeholderText: String,
     errorStatus: Boolean = false,
+    errorMessage: String? = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     onTextChanged: (String) -> Unit = {}
 ) {
 
-    val textValue = remember {
+    val textValue = rememberSaveable {
         mutableStateOf("")
     }
     val localFocusManager = LocalFocusManager.current
@@ -190,7 +192,18 @@ fun PrimaryTextFieldComponent(
             textValue.value = it
             onTextChanged(it)
         },
-        isError = errorStatus
+        isError = !errorStatus,
+        supportingText = {
+            if (!errorStatus) {
+                errorMessage?.let {
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = it,
+                        color = AppTheme.colorScheme.primary
+                    )
+                }
+            }
+        }
     )
 }
 
@@ -198,12 +211,13 @@ fun PrimaryTextFieldComponent(
 fun PasswordTextFieldComponent(
     placeholderText: String,
     errorStatus: Boolean = false,
+    errorMessage: String? = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
     onTextSelected: (String) -> Unit = {}
 ) {
 
     val localFocusManager = LocalFocusManager.current
-    val password = remember {
+    val password = rememberSaveable {
         mutableStateOf("")
     }
 
@@ -271,7 +285,17 @@ fun PasswordTextFieldComponent(
 
         },
         visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-        isError = errorStatus
+        isError = !errorStatus,
+        supportingText = {
+            if (!errorStatus) {
+                if (!errorMessage.isNullOrEmpty())
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = errorMessage,
+                        color = AppTheme.colorScheme.primary
+                    )
+            }
+        }
     )
 }
 

@@ -1,4 +1,4 @@
-package com.boilerplate.app.presentation.screens.auth
+package com.boilerplate.app.presentation.screens.auth.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +31,7 @@ fun ForgotPassScreen(
     navController: NavController
 ) {
     
-    AuthLayout(isLogin = null, onButtonClick = { navController.navigateUp() }) {
+    AuthLayout(isLogin = null, onButtonClick = { navController.navigateUp() }, content = {
         val scrollState = rememberScrollState()
 
         Column(
@@ -78,6 +78,6 @@ fun ForgotPassScreen(
             })
 
         }
-    }
-    
+    })
+
 }

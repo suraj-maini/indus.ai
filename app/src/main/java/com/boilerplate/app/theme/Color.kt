@@ -16,3 +16,5 @@ val DarkGray = Color(0xFF807979)
 val MidDarkGray = Color(0xFF999183)
 val BackgroundGray = Color(0xFF4D4949)
 val BackgroundLightGray = Color(0xFFB9B3A9)
+
+val TransparentBlack = Color(0x80000000)

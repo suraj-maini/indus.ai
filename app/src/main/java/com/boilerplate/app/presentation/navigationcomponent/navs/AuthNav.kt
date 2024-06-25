@@ -4,9 +4,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.boilerplate.app.presentation.navigationcomponent.NavRoute
-import com.boilerplate.app.presentation.screens.auth.ForgotPassScreen
-import com.boilerplate.app.presentation.screens.auth.LoginScreen
-import com.boilerplate.app.presentation.screens.auth.SignupScreen
+import com.boilerplate.app.presentation.screens.auth.screen.ForgotPassScreen
+import com.boilerplate.app.presentation.screens.auth.login.LoginScreen
+import com.boilerplate.app.presentation.screens.auth.screen.SignupScreen
 
 fun NavGraphBuilder.addAuthFeature(navController: NavController) {
     composable(NavRoute.Login.route) {
