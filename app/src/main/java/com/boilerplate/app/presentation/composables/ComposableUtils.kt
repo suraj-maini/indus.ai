@@ -46,7 +46,7 @@ fun SnackbarWithoutScaffold(
             snackbarData = it,
             containerColor = AppTheme.colorScheme.onBackground,
             contentColor = AppTheme.colorScheme.background,
-            actionColor = AppTheme.colorScheme.primary
+            actionColor = AppTheme.colorScheme.primary,
         )
     }
     SideEffect {
@@ -62,49 +62,6 @@ fun SnackbarWithoutScaffold(
 
     }
 }
-
-/*@Composable
-fun HandleApiError(
-    failure: Resource.Failure,
-    retryAction: (() -> Unit)? = null,
-    noDataAction: (() -> Unit)? = null,
-    noInternetAction: (() -> Unit)? = null,
-    snackbarHostState: SnackbarHostState
-) {
-    val showDialog = remember { mutableStateOf(true) }
-    when (failure.failureStatus) {
-        FailureStatus.EMPTY -> {
-            noDataAction?.invoke()
-        }
-
-        FailureStatus.NO_INTERNET -> {
-            noInternetAction?.invoke()
-            if (showDialog.value) {
-                AlertDialogDemo(showDialog = showDialog)
-            }
-        }
-
-        FailureStatus.API_FAIL, FailureStatus.OTHER -> {
-            noDataAction?.invoke()
-
-            SnackbarWithoutScaffold(
-                snackbarHostState = snackbarHostState,
-                message = failure.message!!,
-                showSb = true
-            ) {
-
-            }
-
-//            requireView().showSnackBar(
-//                failure.message ?: resources.getString(R.string.some_error),
-//                resources.getString(R.string.retry),
-//                retryAction
-//            )
-
-        }
-    }
-}*/
-
 
 @Composable
 fun AlertDialogDemo(showDialog: MutableState<Boolean>) {
