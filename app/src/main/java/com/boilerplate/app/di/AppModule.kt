@@ -3,6 +3,7 @@ package com.boilerplate.app.di
 import android.app.Application
 import android.content.Context
 import com.boilerplate.app.utils.EncryptedPrefs
+import com.boilerplate.app.utils.SharedPreferencesHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,6 +24,12 @@ object AppModule {
     @Singleton
     fun provideEncryptedPrefs(@ApplicationContext context: Context): EncryptedPrefs {
         return EncryptedPrefs(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferencesHelper(@ApplicationContext context: Context): SharedPreferencesHelper {
+        return SharedPreferencesHelper(context)
     }
 
 }

@@ -68,4 +68,13 @@ class EncryptedPrefs @Inject constructor(context: Context) {
     fun clear() {
         sharedPreferences.edit().clear().apply()
     }
+
+    fun saveTokens(authToken: String?, refreshToken: String?) {
+        putString("authToken", authToken)
+        putString("refreshToken", refreshToken)
+    }
+
+    fun getAuthToken(): String? = getString("authToken")
+    fun getRefreshToken(): String? = getString("refreshToken")
+
 }

@@ -1,6 +1,7 @@
 package com.boilerplate.app.presentation.screens.auth.login
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,9 @@ fun LoginScreen(
     navController: NavController,
     loginViewModel: LogInViewModel = hiltViewModel()
 ) {
+
+    val context = LocalContext.current
+
     var canShowSnackBar = remember { mutableStateOf(false) }
     var snackBarMessage = remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
@@ -68,10 +72,9 @@ fun LoginScreen(
     LaunchedEffect(key1 = Unit) {
         loginViewModel.initializeState()
         coroutineScope.launch {
-            loginViewModel.logInnResponse.collect { loginState: LoginUIState ->
+            loginViewModel.logInResponse.collect { loginState: LoginUIState ->
                 isLoading = loginState.isLoading
                 if (loginState.error != null && loginState.error.failureStatus != FailureStatus.NOTHING) {
-                    Log.d("LoginScreenen", "Failure".plus(loginState.error.failureStatus))
                     error = loginState.error
                     canShowSnackBar.value = true
                     snackBarMessage.value = loginState.error.message.toString()
@@ -80,8 +83,8 @@ fun LoginScreen(
                     snackBarMessage.value = ""
                 }
                 loginState.data?.let {
-//                    isLoading = false
-                    Log.d("LoginScreenen", "Success")
+//                    navController.navigate(NavRoute.Home.route)
+                    Toast.makeText(context, loginViewModel.getUser().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -144,6 +147,8 @@ fun LoginScreen(
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
             PasswordTextFieldComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
                 placeholderText = stringResource(id = R.string.password),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
@@ -152,8 +157,8 @@ fun LoginScreen(
                 onTextSelected = {
                     loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
                 },
-                errorStatus = loginViewModel.loginUIState.value.passwordError,
-                errorMessage = loginViewModel.loginUIState.value.passwordErrorMsg
+                /*errorStatus = loginViewModel.loginUIState.value.passwordError,*/
+                /*errorMessage = loginViewModel.loginUIState.value.passwordErrorMsg*/
             )
 
             TextButtonComponent(

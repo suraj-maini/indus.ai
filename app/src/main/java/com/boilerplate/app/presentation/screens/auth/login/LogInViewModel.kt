@@ -3,10 +3,10 @@ package com.boilerplate.app.presentation.screens.auth.login
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.boilerplate.app.base.BaseViewModel
-import com.boilerplate.app.data.models.auth.model.LoginResponse
 import com.boilerplate.app.data.models.auth.request.LogInRequest
 import com.boilerplate.app.domain.usecase.auth.LogInUseCase
 import com.boilerplate.app.data.BaseResponse
+import com.boilerplate.app.data.models.auth.model.LoginResponse
 import com.boilerplate.app.data.models.auth.model.SignUpResponse
 import com.boilerplate.app.data.models.auth.request.SignUpRequest
 import com.boilerplate.app.domain.utils.FailureStatus
@@ -14,6 +14,7 @@ import com.boilerplate.app.domain.usecase.auth.SignUpUseCase
 import com.boilerplate.app.domain.utils.Resource
 import com.boilerplate.app.domain.utils.SingleLiveEvent
 import com.boilerplate.app.presentation.screens.auth.Validator
+import com.boilerplate.app.utils.SharedPreferencesHelper
 //import com.boilerplate.app.utils.EncryptedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,17 +27,11 @@ import javax.inject.Inject
 @HiltViewModel
 class LogInViewModel @Inject constructor(
     private val logInUseCase: LogInUseCase,
-    private val signupUseCase: SignUpUseCase
+    private val signupUseCase: SignUpUseCase,
+    private val sharedPrefs: SharedPreferencesHelper
 ) : BaseViewModel() {
 
-
-    private val TAG = LogInViewModel::class.simpleName
-
     var loginUIState = mutableStateOf(LoginUIState())
-
-    var allValidationsPassed = mutableStateOf(false)
-
-
 
     fun onEvent(event: LoginUIEvent) {
         when (event) {
@@ -60,36 +55,39 @@ class LogInViewModel @Inject constructor(
         }
     }
 
+    private val _logInResponse =
+        MutableStateFlow(LoginUIState())
+    val logInResponse = _logInResponse
+
     private fun login() {
         val email = loginUIState.value.email
         val password = loginUIState.value.password
 
-        loginRequest = LogInRequest(email, password)
+        val loginRequest = LogInRequest(email, password)
 
         logInUseCase(loginRequest)
-            .catch { exception -> validationException.value = exception.message?.toInt() }
+            /*.catch { exception -> validationException.value = exception.message?.toInt() }*/
             .onEach { loginResponse ->
 
                 when (loginResponse) {
                     Resource.Default -> {}
                     is Resource.Failure -> {
-                        _logInnResponse.value = LoginUIState(error = loginResponse, isLoading = false)
+                        _logInResponse.value = LoginUIState(error = loginResponse, isLoading = false)
                     }
                     Resource.Loading -> {
-                        _logInnResponse.value = LoginUIState(isLoading = true)
+                        _logInResponse.value = LoginUIState(isLoading = true)
                     }
                     is Resource.Success -> {
-                        _logInnResponse.value = LoginUIState(data = loginResponse.value, isLoading = false)
+                        _logInResponse.value = LoginUIState(data = loginResponse.value, isLoading = false)
                     }
                 }
-//                _logInResponse.value = loginResponse
             }
             .launchIn(viewModelScope)
     }
 
     fun initializeState(){
         viewModelScope.launch {
-            _logInnResponse.emit(LoginUIState(error = Resource.Failure(FailureStatus.NOTHING)))
+            _logInResponse.emit(LoginUIState(error = Resource.Failure(FailureStatus.NOTHING)))
         }
     }
 
@@ -112,20 +110,15 @@ class LogInViewModel @Inject constructor(
         )
 
 //        allValidationsPassed.value = emailResult.isValid && passwordResult.isValid
-        return emailResult.isValid && passwordResult.isValid
+//        return emailResult.isValid && passwordResult.isValid
+        return emailResult.isValid
 
     }
 
+    fun getUser(): LoginResponse = sharedPrefs.getUser()
 
-    var loginRequest = LogInRequest()
+
     var signUpRequest = SignUpRequest()
-    private val _logInResponse =
-        MutableStateFlow<Resource<BaseResponse<LoginResponse>>>(Resource.Default)
-    val logInResponse = _logInResponse
-
-    private val _logInnResponse =
-        MutableStateFlow(LoginUIState())
-    val logInnResponse = _logInnResponse
 
     var togglePassword = SingleLiveEvent<Void>()
     var openForgotPassword = SingleLiveEvent<Void>()
@@ -139,16 +132,6 @@ class LogInViewModel @Inject constructor(
     fun onForgotPasswordClicked() {
         openForgotPassword.call()
     }
-
-    fun onLogInClicked() {
-        logInUseCase(loginRequest)
-            .catch { exception -> validationException.value = exception.message?.toInt() }
-            .onEach { loginResponse ->
-                _logInResponse.value = loginResponse
-            }
-            .launchIn(viewModelScope)
-    }
-
 
     private val _signUpResponse =
         MutableStateFlow<Resource<BaseResponse<SignUpResponse>>>(Resource.Default)

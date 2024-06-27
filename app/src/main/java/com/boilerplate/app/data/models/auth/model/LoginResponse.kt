@@ -6,13 +6,13 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class LoginResponse(
     @Json(name = "avatar_url")
-    var avatarUrl: Any? = null,
+    var avatarUrl: String? = null,
     @Json(name = "email")
     var email: String? = null,
     @Json(name = "first_name")
     var firstName: String? = null,
     @Json(name = "id")
-    var id: Any? = null,
+    var id: Int? = null,
     @Json(name = "is_allow")
     var isAllow: Boolean? = null,
     @Json(name = "is_blocked")

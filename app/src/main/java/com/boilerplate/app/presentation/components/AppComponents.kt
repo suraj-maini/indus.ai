@@ -211,6 +211,7 @@ fun PrimaryTextFieldComponent(
 
 @Composable
 fun PasswordTextFieldComponent(
+    modifier: Modifier = Modifier,
     placeholderText: String,
     errorStatus: Boolean = false,
     errorMessage: String? = "",
@@ -227,78 +228,79 @@ fun PasswordTextFieldComponent(
         mutableStateOf(false)
     }
 
-    TextField(
-        modifier = Modifier
-            .fillMaxWidth(),
-        shape = AppTheme.shape.button,
-        placeholder = {
-            TextComponent(
-                value = placeholderText,
-                color = AppTheme.colorScheme.onSecondary
-            )
-        },
-        label = null,
-        textStyle = LocalTextStyle.current.copy(color = AppTheme.colorScheme.onBackground),
-        colors = TextFieldDefaults.colors(
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            errorIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = AppTheme.colorScheme.onBackground,
-            focusedTextColor = AppTheme.colorScheme.onBackground,
-            unfocusedTextColor = AppTheme.colorScheme.onBackground,
-            errorTextColor = AppTheme.colorScheme.primary,
-            focusedContainerColor = AppTheme.colorScheme.secondary,
-            unfocusedContainerColor = AppTheme.colorScheme.secondary,
-            errorContainerColor = AppTheme.colorScheme.secondary,
-            disabledContainerColor = AppTheme.colorScheme.secondary
-        ),
-        keyboardOptions = keyboardOptions,
-        singleLine = true,
-        keyboardActions = KeyboardActions {
-            localFocusManager.clearFocus()
-        },
-        maxLines = 1,
-        value = password.value,
-        onValueChange = {
-            password.value = it
-            onTextSelected(it)
-        },
-        trailingIcon = {
-
-            val iconImage = if (passwordVisible.value) {
-                Icons.Filled.VisibilityOff
-            } else {
-                Icons.Filled.Visibility
-            }
-
-            val description = if (passwordVisible.value) {
-                stringResource(id = R.string.hide_password)
-            } else {
-                stringResource(id = R.string.show_password)
-            }
-
-            IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
-                Icon(
-                    imageVector = iconImage, contentDescription = description,
-                    tint = AppTheme.colorScheme.onSecondaryIcon
+    Column(modifier = modifier) {
+        TextField(
+            modifier = Modifier
+                .fillMaxWidth(),
+            shape = AppTheme.shape.button,
+            placeholder = {
+                TextComponent(
+                    value = placeholderText,
+                    color = AppTheme.colorScheme.onSecondary
                 )
-            }
+            },
+            label = null,
+            textStyle = LocalTextStyle.current.copy(color = AppTheme.colorScheme.onBackground),
+            colors = TextFieldDefaults.colors(
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                errorIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent,
+                cursorColor = AppTheme.colorScheme.onBackground,
+                focusedTextColor = AppTheme.colorScheme.onBackground,
+                unfocusedTextColor = AppTheme.colorScheme.onBackground,
+                errorTextColor = AppTheme.colorScheme.primary,
+                focusedContainerColor = AppTheme.colorScheme.secondary,
+                unfocusedContainerColor = AppTheme.colorScheme.secondary,
+                errorContainerColor = AppTheme.colorScheme.secondary,
+                disabledContainerColor = AppTheme.colorScheme.secondary
+            ),
+            keyboardOptions = keyboardOptions,
+            singleLine = true,
+            keyboardActions = KeyboardActions {
+                localFocusManager.clearFocus()
+            },
+            maxLines = 1,
+            value = password.value,
+            onValueChange = {
+                password.value = it
+                onTextSelected(it)
+            },
+            trailingIcon = {
 
-        },
-        visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
-        isError = !errorStatus,
-        supportingText = {
-            if (!errorStatus) {
-                if (!errorMessage.isNullOrEmpty())
-                    Text(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = errorMessage,
-                        color = AppTheme.colorScheme.primary
+                val iconImage = if (passwordVisible.value) {
+                    Icons.Filled.VisibilityOff
+                } else {
+                    Icons.Filled.Visibility
+                }
+
+                val description = if (passwordVisible.value) {
+                    stringResource(id = R.string.hide_password)
+                } else {
+                    stringResource(id = R.string.show_password)
+                }
+
+                IconButton(onClick = { passwordVisible.value = !passwordVisible.value }) {
+                    Icon(
+                        imageVector = iconImage, contentDescription = description,
+                        tint = AppTheme.colorScheme.onSecondaryIcon
                     )
-            }
+                }
+
+            },
+            visualTransformation = if (passwordVisible.value) VisualTransformation.None else PasswordVisualTransformation(),
+        )
+        if (!errorStatus) {
+            if (!errorMessage.isNullOrEmpty())
+                Text(
+                    modifier = Modifier.fillMaxWidth()
+                    .padding(top = 4.dp, start = 16.dp, end = 16.dp),
+                    style = AppTheme.typography.labelSmall,
+                    text = errorMessage,
+                    color = AppTheme.colorScheme.primary
+                )
         }
-    )
+    }
 }
 
 

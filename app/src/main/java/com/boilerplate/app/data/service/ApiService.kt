@@ -17,6 +17,6 @@ interface ApiService {
     @POST("api/mob/register")
     suspend fun signup(@Body request: SignUpRequest): BaseResponse<SignUpResponse>
 
-    @POST("auth/refresh")
+    @POST("api/mob/authentication")
     suspend fun refreshAuthToken(@Body request: RefreshTokenRequest): TokenResponse
 }

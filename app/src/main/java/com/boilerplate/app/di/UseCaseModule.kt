@@ -4,6 +4,7 @@ import com.boilerplate.app.domain.repository.auth.AuthRepository
 import com.boilerplate.app.domain.usecase.auth.LogInUseCase
 import com.boilerplate.app.domain.usecase.auth.SignUpUseCase
 import com.boilerplate.app.utils.EncryptedPrefs
+import com.boilerplate.app.utils.SharedPreferencesHelper
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,8 +19,9 @@ object UseCaseModule {
     @Singleton
     fun provideLogInUseCase(
         authRepository: AuthRepository,
-        encryptedPrefs: EncryptedPrefs
-    ): LogInUseCase = LogInUseCase(authRepository, encryptedPrefs)
+        encryptedPrefs: EncryptedPrefs,
+        sharedPreferencesHelper: SharedPreferencesHelper
+    ): LogInUseCase = LogInUseCase(authRepository, encryptedPrefs, sharedPreferencesHelper)
 
     @Provides
     @Singleton

@@ -44,7 +44,9 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideBaseUrl(): String = "https://hassanrsiddiqi.com/"
+//    fun provideBaseUrl(): String = "https://hassanrsiddiqi.com/"
+    fun provideBaseUrl(): String = "http://167.172.175.218/"
+    //todo - should remove usesCleartextTraffic from manifest file and use https
 
     @Singleton
     @Provides
@@ -205,8 +207,57 @@ object NetworkModule {
 
             val response = chain.proceed(authenticatedRequest)
 
-            // If the response indicates the token is invalid or expired
+            // If the response is 401, try to refresh the token
             if (response.code == 401) {
+                synchronized(this) {
+                    val newAuthToken = tokenManager.authToken
+
+                    // If the token has changed, retry the request
+                    if (newAuthToken != tokenManager.authToken) {
+                        return chain.proceed(originalRequest.newBuilder()
+                            .header("Authorization", "Bearer $newAuthToken")
+                            .build())
+                    }
+
+                    // Refresh the token
+                    val refreshToken = tokenManager.refreshToken
+                    if (refreshToken != null) {
+                        /*val refreshResponse = runCatching {
+                            val tokenResponse = apiServiceProvider.get().refreshAuthToken(RefreshTokenRequest(refreshToken))
+                            saveTokens(tokenResponse.authToken, tokenResponse.refreshToken)
+                            tokenResponse.authToken
+                        }*/
+
+                        val newTokenResponse = runBlocking {
+                            runCatching {
+                                val tokenResponse = apiServiceProvider.get().refreshAuthToken(RefreshTokenRequest(refreshToken))
+                                tokenManager.authToken= tokenResponse.authToken
+                                tokenManager.refreshToken = tokenResponse.refreshToken
+                                tokenResponse.authToken
+                            }.getOrElse {
+                                tokenManager.clearTokens()
+                                return@runBlocking null
+                            }
+                        }
+
+//                        val newToken = refreshResponse.getOrNull()
+                        if (newTokenResponse != null) {
+                            return chain.proceed(originalRequest.newBuilder()
+                                .header("Authorization", "Bearer $newTokenResponse.authToken")
+                                .build())
+                        } else {
+                            // Handle refresh token failure (e.g., log out the user)
+                            tokenManager.clearTokens()
+                        }
+                    } else {
+                        // Handle the case where there is no refresh token
+                        tokenManager.clearTokens()
+                    }
+                }
+            }
+
+            // If the response indicates the token is invalid or expired
+            /*if (response.code == 401) {
                 response.close() // Close the response to avoid leaks
 
                 val refreshToken = tokenManager.refreshToken
@@ -232,7 +283,7 @@ object NetworkModule {
                         .build()
                     return chain.proceed(newAuthenticatedRequest)
                 }
-            }
+            }*/
 
             return response
         }

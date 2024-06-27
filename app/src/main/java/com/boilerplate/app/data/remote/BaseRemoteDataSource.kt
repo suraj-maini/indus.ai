@@ -66,7 +66,7 @@ open class BaseRemoteDataSource @Inject constructor() {
               val jsonAdapter = moshi.adapter(ErrorResponse::class.java)
               val errorResponse = jsonAdapter.fromJson(throwable.response()?.errorBody()!!.charStream().readText())
 
-              return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), errorResponse?.detail)
+              return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), errorResponse?.message)
             }
             else -> {
               return if (throwable.response()?.errorBody()!!.charStream().readText().isEmpty()) {
@@ -79,7 +79,7 @@ open class BaseRemoteDataSource @Inject constructor() {
                   val jsonAdapter = moshi.adapter(ErrorResponse::class.java)
                   val errorResponse = jsonAdapter.fromJson(throwable.response()?.errorBody()!!.charStream().readText())
 
-                  Resource.Failure(FailureStatus.API_FAIL, throwable.code(), errorResponse?.detail)
+                  Resource.Failure(FailureStatus.API_FAIL, throwable.code(), errorResponse?.message)
                 } catch (e: JsonDataException) {
                   // Handle JSON data exceptions
                   Resource.Failure(FailureStatus.API_FAIL, throwable.code(), "Invalid JSON data")
