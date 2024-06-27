@@ -26,6 +26,7 @@ import com.boilerplate.app.presentation.components.DynamicAppBar
 import com.boilerplate.app.presentation.components.SecondaryButton
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.TransparentBlack
+import com.boilerplate.app.utils.hideKeyboardOnOutsideClick
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -85,6 +86,7 @@ fun AuthLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .hideKeyboardOnOutsideClick()
             ) {
                 content(innerPadding)
             }
