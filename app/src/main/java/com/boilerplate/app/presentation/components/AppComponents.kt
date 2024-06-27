@@ -44,7 +44,6 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
@@ -73,13 +72,15 @@ fun PreviewTheComposable() {
 fun TextComponent(
     modifier: Modifier = Modifier,
     value: String,
+    fontSize: TextUnit = 14.sp,
     color: Color = AppTheme.colorScheme.onBackground
 ) {
     Text(
         text = value,
         modifier = modifier,
         style = AppTheme.typography.labelNormal.copy(
-            color = color
+            color = color,
+            fontSize = fontSize
         ),
         textAlign = TextAlign.Center
     )
@@ -216,7 +217,7 @@ fun PasswordTextFieldComponent(
     errorStatus: Boolean = false,
     errorMessage: String? = "",
     keyboardOptions: KeyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-    onTextSelected: (String) -> Unit = {}
+    onTextChanged: (String) -> Unit = {}
 ) {
 
     val localFocusManager = LocalFocusManager.current
@@ -264,7 +265,7 @@ fun PasswordTextFieldComponent(
             value = password.value,
             onValueChange = {
                 password.value = it
-                onTextSelected(it)
+                onTextChanged(it)
             },
             trailingIcon = {
 

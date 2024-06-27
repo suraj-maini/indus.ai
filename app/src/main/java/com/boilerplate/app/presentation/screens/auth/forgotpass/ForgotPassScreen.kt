@@ -1,4 +1,4 @@
-package com.boilerplate.app.presentation.screens.auth.screen
+package com.boilerplate.app.presentation.screens.auth.forgotpass
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
