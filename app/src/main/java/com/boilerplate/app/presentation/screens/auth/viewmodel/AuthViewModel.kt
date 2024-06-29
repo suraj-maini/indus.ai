@@ -73,7 +73,7 @@ class AuthViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun getUser(): LoginResponse = sharedPrefs.getUser()
+    fun getUser(): LoginResponse? = sharedPrefs.getUser()
 
     private val _signUpResponse =
         MutableStateFlow(SignupUIState())

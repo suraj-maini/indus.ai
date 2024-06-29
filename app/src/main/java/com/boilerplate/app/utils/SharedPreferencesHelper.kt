@@ -68,8 +68,8 @@ class SharedPreferencesHelper(context: Context) {
         user.plan?.let { saveString("plan", it) }
     }
 
-    fun getUser(): LoginResponse {
-        return LoginResponse(
+    fun getUser(): LoginResponse? {
+        return if (getString("email") == null) null else LoginResponse(
             id = getInt("id"),
             firstName = getString("first_name"),
             lastName = getString("last_name"),

@@ -1,4 +1,4 @@
-package com.boilerplate.app.presentation.screens.auth.forgotpass
+package com.boilerplate.app.presentation.screens.auth.newPass
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,20 +19,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.boilerplate.app.R
-import com.boilerplate.app.presentation.components.ClickableAuthTextComponent
 import com.boilerplate.app.presentation.components.LoginTextComponent
+import com.boilerplate.app.presentation.components.PasswordTextFieldComponent
 import com.boilerplate.app.presentation.components.PrimaryButton
-import com.boilerplate.app.presentation.components.PrimaryTextFieldComponent
 import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
 
 @Composable
-fun ForgotPassScreen(
+fun NewPassScreen(
     navController: NavController
 ) {
     
@@ -50,7 +48,7 @@ fun ForgotPassScreen(
 
             LoginTextComponent(
                 modifier = Modifier.fillMaxWidth(),
-                boldText = stringResource(R.string.recover),
+                boldText = stringResource(R.string.new_txt),
                 italicText = stringResource(R.string.password)
             )
 
@@ -58,19 +56,48 @@ fun ForgotPassScreen(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.colorScheme.onBackgroundGray,
                 fontSize = 16.sp,
-                value = stringResource(R.string.enter_the_email_for_which_you_want_to_recover_your_password)
+                value = stringResource(R.string.your_new_password_must_be_different_from_previous_used_password)
             )
 
             VerticalSpacer(size = 30.dp)
 
             TextSmallTitleComponent(
-                value = stringResource(R.string.email),
+                value = stringResource(R.string.password),
                 modifier = Modifier.padding(horizontal = 10.dp)
             )
-            PrimaryTextFieldComponent(modifier = Modifier
-                .fillMaxWidth(),
-                placeholderText = stringResource(R.string.email),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email, imeAction = ImeAction.Done)
+
+            PasswordTextFieldComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                placeholderText = stringResource(R.string.old_password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Next
+                ),
+                onTextChanged = {
+//                    authViewModel.onSignupEvent(SignupUIEvent.PasswordChanged(it))
+                },
+//                errorStatus = authViewModel.signupUIState.value.passwordError,
+//                errorMessage = authViewModel.signupUIState.value.passwordErrorMsg
+            )
+
+            TextSmallTitleComponent(
+                value = "Confirm Password",
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+            PasswordTextFieldComponent(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                placeholderText = stringResource(R.string.confirm_password),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Password,
+                    imeAction = ImeAction.Done
+                ),
+                onTextChanged = {
+//                    authViewModel.onSignupEvent(SignupUIEvent.ConfirmPasswordChanged(it))
+                },
+//                errorStatus = authViewModel.signupUIState.value.confirmPasswordError,
+//                errorMessage = authViewModel.signupUIState.value.confirmPasswordErrorMsg
             )
 
             VerticalSpacer()
@@ -78,17 +105,10 @@ fun ForgotPassScreen(
             PrimaryButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(45.dp), label = stringResource(R.string.send_recovery_link)
+                    .height(45.dp), label = stringResource(R.string.reset_password)
             ) {
-                navController.navigate(NavRoute.OtpVerification.route)
+//                navController.navigate(NavRoute.OtpVerification.route)
             }
-
-            VerticalSpacer()
-
-            ClickableAuthTextComponent(initialText = stringResource(R.string.remember_password), clickAbleText = stringResource(R.string.login), onTextSelected = {
-                navController.navigateUp()
-            })
-
         }
     })
 

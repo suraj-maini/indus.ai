@@ -7,6 +7,8 @@ sealed class NavRoute(val route: String) {
         val id = "id"
         val showDetails = "showDetails"
     }
+    data object OtpVerification : NavRoute("otpVerification")
+    data object NewPassword : NavRoute("newPassword")
 
 
     // build navigation path (for screen navigation)

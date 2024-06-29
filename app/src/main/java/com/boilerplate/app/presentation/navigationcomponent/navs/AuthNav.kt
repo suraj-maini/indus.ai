@@ -6,6 +6,8 @@ import androidx.navigation.compose.composable
 import com.boilerplate.app.presentation.navigationcomponent.NavRoute
 import com.boilerplate.app.presentation.screens.auth.forgotpass.ForgotPassScreen
 import com.boilerplate.app.presentation.screens.auth.login.LoginScreen
+import com.boilerplate.app.presentation.screens.auth.newPass.NewPassScreen
+import com.boilerplate.app.presentation.screens.auth.otpVerfificationScreen.OtpVerificationScreen
 import com.boilerplate.app.presentation.screens.auth.signup.SignupScreen
 
 fun NavGraphBuilder.addAuthFeature(navController: NavController) {
@@ -28,5 +30,11 @@ fun NavGraphBuilder.addAuthFeature(navController: NavController) {
     }
     composable(NavRoute.ForgotPassword.route) {
         ForgotPassScreen(navController)
+    }
+    composable(NavRoute.OtpVerification.route) {
+        OtpVerificationScreen(navController)
+    }
+    composable(NavRoute.NewPassword.route) {
+        NewPassScreen(navController)
     }
 }
