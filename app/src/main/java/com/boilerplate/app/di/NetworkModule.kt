@@ -184,7 +184,7 @@ object NetworkModule {
 
             // Exclude certain endpoints from having the bearer token
             val url = originalRequest.url.toString()
-            val excludeEndpoints = listOf("/login", "/signup") // Add other endpoints as needed
+            val excludeEndpoints = listOf("/login", "/register") // Add other endpoints as needed
 
             val shouldExcludeToken = excludeEndpoints.any { url.contains(it, ignoreCase = true) }
 

@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class SignUpResponse(
     @Json(name = "avatar_url")
-    var avatarUrl: Any? = null,
+    var avatarUrl: String? = null,
     @Json(name = "email")
     var email: String? = null,
     @Json(name = "first_name")
