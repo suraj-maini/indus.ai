@@ -37,14 +37,15 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -136,7 +137,10 @@ fun TextSmallTitleComponent(
 }
 
 @Composable
-fun LoginTextComponent(modifier: Modifier = Modifier, boldText: String, italicText: String) {
+fun LoginTextComponent(
+    modifier: Modifier = Modifier, boldText: String, italicText: String,
+    color: Color = AppTheme.colorScheme.onBackground
+) {
 
     val annotatedString = buildAnnotatedString {
         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -151,7 +155,7 @@ fun LoginTextComponent(modifier: Modifier = Modifier, boldText: String, italicTe
         text = annotatedString,
         modifier = modifier,
         style = AppTheme.typography.titleLarge.copy(
-            color = AppTheme.colorScheme.onBackground
+            color = color
         ),
         fontSize = 30.sp,
         textAlign = TextAlign.Center
@@ -241,6 +245,7 @@ fun PasswordTextFieldComponent(
     val passwordVisible = remember {
         mutableStateOf(false)
     }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier) {
         TextField(
@@ -271,9 +276,15 @@ fun PasswordTextFieldComponent(
             ),
             keyboardOptions = keyboardOptions,
             singleLine = true,
-            keyboardActions = KeyboardActions {
-                localFocusManager.clearFocus()
-            },
+            keyboardActions = KeyboardActions (
+                onNext = {
+                    localFocusManager.moveFocus(FocusDirection.Next)
+                    keyboardController?.show()
+                },
+                onDone = {
+                    localFocusManager.clearFocus()
+                }
+            ),
             maxLines = 1,
             value = password.value,
             onValueChange = {
@@ -410,23 +421,19 @@ fun DynamicAppBar(
 @Composable
 fun OtpTextField(
     modifier: Modifier = Modifier,
+    otpText: String,
     otpCount: Int = 6,
     onOtpTextChange: (String, Boolean) -> Unit
 ) {
-
-    val otpValue by rememberSaveable {
-        mutableStateOf("")
-    }
-
     LaunchedEffect(Unit) {
-        if (otpValue.length > otpCount) {
+        if (otpText.length > otpCount) {
             throw IllegalArgumentException("Otp text value must not have more than otpCount: $otpCount characters")
         }
     }
 
     BasicTextField(
         modifier = modifier,
-        value = TextFieldValue(otpValue, selection = TextRange(otpValue.length)),
+        value = TextFieldValue(otpText, selection = TextRange(otpText.length)),
         onValueChange = {
             if (it.text.length <= otpCount) {
                 onOtpTextChange.invoke(it.text, it.text.length == otpCount)
@@ -438,7 +445,7 @@ fun OtpTextField(
                 repeat(otpCount) { index ->
                     CharView(
                         index = index,
-                        text = otpValue
+                        text = otpText
                     )
                     if (index != otpCount - 1)
                         Spacer(modifier = Modifier.width(20.dp))
