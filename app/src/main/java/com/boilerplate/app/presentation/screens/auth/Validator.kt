@@ -36,6 +36,24 @@ object Validator {
         )
     }
 
+    fun validateConfirmPassword(password: String, confirmPassword: String): ValidationResult {
+        val isEmpty = password.isEmpty() || confirmPassword.isEmpty()
+        val passwordValidation = validatePassword(password) // Call existing password validation
+        val isMatch = password == confirmPassword
+        val isValid = !isEmpty && passwordValidation.isValid && isMatch
+
+        return ValidationResult(
+            isValid,
+            if (isValid) null else {
+                when {
+                    !passwordValidation.isValid -> passwordValidation.errorMessage!! // Use existing error message
+                    !isMatch -> "Confirm password doesn't match password."
+                    else -> "Unknown error." // This shouldn't happen, but a default error message can be useful for debugging
+                }
+            }
+        )
+    }
+
     fun validatePrivacyPolicyAcceptance(statusValue: Boolean): ValidationResult {
         return ValidationResult(
             statusValue,

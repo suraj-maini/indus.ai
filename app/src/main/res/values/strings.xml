@@ -15,4 +15,8 @@
     <string name="no_internet">No internet connection please try again later</string>
     <string name="retry">Retry</string>
     <string name="cancel">Cancel</string>
+    <string name="if_already_have_an_account_please_click_to_here">If already have an account, please click to here</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>

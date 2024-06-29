@@ -26,6 +26,7 @@ import com.boilerplate.app.presentation.components.DynamicAppBar
 import com.boilerplate.app.presentation.components.SecondaryButton
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.TransparentBlack
+import com.boilerplate.app.utils.hideKeyboardOnOutsideClick
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,8 +47,11 @@ fun AuthLayout(
     HandleApiError(failure = onButtonClick1, noDataAction = {
         canShowSnackBar.value = true
         snackBarMessage.value = it
-        showRetryButton = true
-    })
+    },
+        noInternetAction = {
+            canShowSnackBar.value = true
+            snackBarMessage.value = it
+        })
 
     Box {
         Scaffold(
@@ -69,7 +73,6 @@ fun AuthLayout(
                 )
             },
             snackbarHost = {
-                Log.d("canShowSnackBar", "AuthLayout: ${canShowSnackBar.value} $showRetryButton")
                 if (canShowSnackBar.value) {
                     SnackbarWithoutScaffold(
                         message = snackBarMessage.value,
@@ -83,6 +86,7 @@ fun AuthLayout(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
+                    .hideKeyboardOnOutsideClick()
             ) {
                 content(innerPadding)
             }
@@ -108,9 +112,8 @@ fun HandleApiError(
     failure: Resource.Failure,
     retryAction: (() -> Unit)? = null,
     noDataAction: ((String) -> Unit)? = null,
-    noInternetAction: (() -> Unit)? = null
+    noInternetAction: ((String) -> Unit)? = null
 ) {
-    val showDialog = remember { mutableStateOf(true) }
     when (failure.failureStatus) {
         FailureStatus.EMPTY -> {
             noDataAction?.invoke(
@@ -122,10 +125,12 @@ fun HandleApiError(
         }
 
         FailureStatus.NO_INTERNET -> {
-            noInternetAction?.invoke()
-//            if (showDialog.value) {
-                AlertDialogDemo(showDialog = showDialog)
-//            }
+            noInternetAction?.invoke(
+                failure.message ?: ContextCompat.getString(
+                    LocalContext.current,
+                    R.string.no_internet
+                )
+            )
         }
 
         FailureStatus.API_FAIL, FailureStatus.OTHER -> {

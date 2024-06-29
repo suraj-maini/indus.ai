@@ -1,6 +1,5 @@
 package com.boilerplate.app.presentation.screens.auth.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.boilerplate.app.R
@@ -43,6 +43,7 @@ import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
 import com.boilerplate.app.presentation.navigationcomponent.NavRoute
+import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
 import kotlinx.coroutines.cancel
@@ -51,7 +52,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun LoginScreen(
     navController: NavController,
-    loginViewModel: LogInViewModel = hiltViewModel()
+    loginViewModel: AuthViewModel = hiltViewModel()
 ) {
 
     val context = LocalContext.current
@@ -119,6 +120,7 @@ fun LoginScreen(
             TextComponent(
                 modifier = Modifier.fillMaxWidth(),
                 color = AppTheme.colorScheme.onBackgroundGray,
+                fontSize = 16.sp,
                 value = stringResource(R.string.welcome_to).plus(stringResource(id = R.string.app_name))
             )
             VerticalSpacer(size = 30.dp)
@@ -136,7 +138,7 @@ fun LoginScreen(
                     imeAction = ImeAction.Next
                 ),
                 onTextChanged = {
-                    loginViewModel.onEvent(LoginUIEvent.EmailChanged(it))
+                    loginViewModel.onLoginEvent(LoginUIEvent.EmailChanged(it))
                 },
                 errorStatus = loginViewModel.loginUIState.value.emailError,
                 errorMessage = loginViewModel.loginUIState.value.emailErrorMsg
@@ -154,8 +156,8 @@ fun LoginScreen(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Done
                 ),
-                onTextSelected = {
-                    loginViewModel.onEvent(LoginUIEvent.PasswordChanged(it))
+                onTextChanged = {
+                    loginViewModel.onLoginEvent(LoginUIEvent.PasswordChanged(it))
                 },
                 /*errorStatus = loginViewModel.loginUIState.value.passwordError,*/
                 /*errorMessage = loginViewModel.loginUIState.value.passwordErrorMsg*/
@@ -177,97 +179,10 @@ fun LoginScreen(
                     .height(45.dp),
                 label = stringResource(R.string.login)
             ) {
-
-                loginViewModel.onEvent(LoginUIEvent.LoginButtonClicked)
-
-//                loginViewModel.signUpRequest.firstName = "Waqar"
-//                loginViewModel.signUpRequest.lastName = "Vicky"
-//                loginViewModel.signUpRequest.email = "waqarv713@gmail.com"
-//                loginViewModel.signUpRequest.plan = "standard"
-//                loginViewModel.signUpRequest.password = "password"
-//                loginViewModel.signUpRequest.passwordConfirmation = "password"
-//                loginViewModel.onSignUpClicked()
-
-//                navController.navigate(NavRoute.Signup.withArgs(123.toString(), "ali"))
-//                    navController.navigate(NavRoute.Signup.route)
+                loginViewModel.onLoginEvent(LoginUIEvent.LoginButtonClicked)
             }
-
-            /*SecondaryButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(45.dp), label = "Login"
-            ) {
-                loginViewModel.loginRequest.email = "aliabbas2@gmail.com"
-                loginViewModel.loginRequest.password = "password"
-                loginViewModel.onLogInClicked()
-            }*/
         }
     }
-
-    /*Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-
-        DynamicAppBar(
-            actions = {
-                SecondaryButton(
-                    label = "Login",
-                    onClick = { *//* Handle action click *//* })
-                Spacer(modifier = Modifier.width(7.dp))
-                SecondaryButton(
-                    label = "Signup",
-                    onClick = { *//* Handle action click *//* })
-
-            }
-        )
-
-        *//*Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(AppTheme.colorScheme.background)
-                .padding(28.dp)
-        ) {
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(AppTheme.colorScheme.background),
-                verticalArrangement = Arrangement.spacedBy(10.dp)
-            ) {
-
-                TextComponent(
-                    value = "This is a text composable"
-                )
-
-                PrimaryButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(45.dp), label = "Sign Up"
-                ) {
-                    loginViewModel.signUpRequest.firstName = "Waqar"
-                    loginViewModel.signUpRequest.lastName = "Vicky"
-                    loginViewModel.signUpRequest.email = "waqarv713@gmail.com"
-                    loginViewModel.signUpRequest.plan = "standard"
-                    loginViewModel.signUpRequest.password = "password"
-                    loginViewModel.signUpRequest.passwordConfirmation = "password"
-                    loginViewModel.onSignUpClicked()
-
-                    navController.navigate(NavRoute.Signup.withArgs(123.toString(), "ali"))
-//                    navController.navigate(NavRoute.Signup.route)
-                }
-
-                SecondaryButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(45.dp), label = "Login"
-                ) {
-                    loginViewModel.loginRequest.email = "aliabbas2@gmail.com"
-                    loginViewModel.loginRequest.password = "password"
-                    loginViewModel.onLogInClicked()
-                }
-            }
-        }*//*
-    }*/
 }
 
 @Preview(showBackground = true, showSystemUi = true)

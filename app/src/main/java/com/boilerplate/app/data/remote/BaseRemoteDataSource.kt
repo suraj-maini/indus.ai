@@ -58,7 +58,7 @@ open class BaseRemoteDataSource @Inject constructor() {
 
               return Resource.Failure(FailureStatus.API_FAIL, throwable.code(), response?.message)
             }
-            throwable.code() == 401 -> {
+            throwable.code() == 401 || throwable.code() == 403 -> {
 
               val moshi = Moshi.Builder()
                 .add(KotlinJsonAdapterFactory())
