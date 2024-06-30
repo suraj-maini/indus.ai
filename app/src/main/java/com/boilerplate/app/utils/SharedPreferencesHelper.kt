@@ -4,9 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import com.boilerplate.app.BuildConfig
 import com.boilerplate.app.data.models.auth.model.LoginResponse
+import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
 class SharedPreferencesHelper(context: Context) {
+
     private val sharedPreferences: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     companion object {
@@ -55,7 +57,7 @@ class SharedPreferencesHelper(context: Context) {
         editor.apply()
     }
 
-    fun saveUser(user: LoginResponse) {
+    fun saveUser(user: LoginResponse): LoginResponse {
         user.id?.let { saveInt("id", it) }
         user.firstName?.let { saveString("first_name", it) }
         user.lastName?.let { saveString("last_name", it) }
@@ -66,10 +68,12 @@ class SharedPreferencesHelper(context: Context) {
         user.isBlocked?.let { saveInt("is_blocked", it) }
         user.join?.let { saveString("join", it) }
         user.plan?.let { saveString("plan", it) }
+        saveBoolean("isLoggedIn", user.isLoggedIn)
+        return getUser()
     }
 
-    fun getUser(): LoginResponse? {
-        return if (getString("email") == null) null else LoginResponse(
+    fun getUser(): LoginResponse {
+        return LoginResponse(
             id = getInt("id"),
             firstName = getString("first_name"),
             lastName = getString("last_name"),
@@ -80,6 +84,8 @@ class SharedPreferencesHelper(context: Context) {
             isBlocked = getInt("is_blocked"),
             join = getString("join"),
             plan = getString("plan"),
+            isLoggedIn = getBoolean("isLoggedIn")
         )
     }
+
 }

@@ -1,15 +1,7 @@
 package com.boilerplate.app.presentation.navigationcomponent
 
-sealed class NavRoute(val route: String) {
-    data object Login : NavRoute("home")
-    data object ForgotPassword : NavRoute("forgotPassword")
-    data object Signup : NavRoute("signup"){
-        val id = "id"
-        val showDetails = "showDetails"
-    }
-    data object OtpVerification : NavRoute("otpVerification")
-    data object NewPassword : NavRoute("newPassword")
-
+sealed class HomeNavRoute(val route: String) {
+    data object Home : HomeNavRoute("home")
 
     // build navigation path (for screen navigation)
     fun withArgs(vararg args: String): String {

@@ -37,7 +37,7 @@ import com.boilerplate.app.presentation.components.PrimaryButton
 import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
+import com.boilerplate.app.presentation.navigationcomponent.AuthNavRoute
 import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
@@ -115,7 +115,7 @@ fun OtpVerificationScreen(
                         .fillMaxWidth()
                         .height(45.dp), label = stringResource(R.string.verify)
                 ) {
-                    navController.navigate(NavRoute.NewPassword.route)
+                    navController.navigate(AuthNavRoute.NewPassword.route)
                 }
 
                 VerticalSpacer()

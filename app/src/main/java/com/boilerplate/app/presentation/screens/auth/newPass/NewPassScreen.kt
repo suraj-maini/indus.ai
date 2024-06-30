@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.boilerplate.app.R
 import com.boilerplate.app.presentation.components.LoginTextComponent
@@ -26,12 +27,14 @@ import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
+import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
 
 @Composable
 fun NewPassScreen(
-    navController: NavController
+    navController: NavController,
+    authViewModel: AuthViewModel = hiltViewModel()
 ) {
     
     AuthLayout(isLogin = null, onButtonClick = { navController.navigateUp() }, content = {

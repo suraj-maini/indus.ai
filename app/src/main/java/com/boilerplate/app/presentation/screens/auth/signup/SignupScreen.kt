@@ -77,7 +77,7 @@ import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
+import com.boilerplate.app.presentation.navigationcomponent.AuthNavRoute
 import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
@@ -88,6 +88,7 @@ import kotlinx.coroutines.launch
 fun SignupScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
+    onLogin: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -118,8 +119,8 @@ fun SignupScreen(
                     snackBarMessage.value = ""
                 }
                 signupState.data?.let {
-                    navController.navigate(route = NavRoute.Login.route, navOptions {
-                        popUpTo(NavRoute.Login.route) {
+                    navController.navigate(route = AuthNavRoute.Login.route, navOptions {
+                        popUpTo(AuthNavRoute.Login.route) {
                             inclusive = true
                         }
                     })

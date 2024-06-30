@@ -3,7 +3,7 @@ package com.boilerplate.app.presentation.navigationcomponent.navs
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
+import com.boilerplate.app.presentation.navigationcomponent.AuthNavRoute
 import com.boilerplate.app.presentation.screens.auth.forgotpass.ForgotPassScreen
 import com.boilerplate.app.presentation.screens.auth.login.LoginScreen
 import com.boilerplate.app.presentation.screens.auth.newPass.NewPassScreen
@@ -11,12 +11,16 @@ import com.boilerplate.app.presentation.screens.auth.otpVerfificationScreen.OtpV
 import com.boilerplate.app.presentation.screens.auth.signup.SignupScreen
 import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 
-fun NavGraphBuilder.addAuthFeature(navController: NavController, authViewModel: AuthViewModel) {
-    composable(NavRoute.Login.route) {
-        LoginScreen(navController)
+fun NavGraphBuilder.addAuthFeature(
+    navController: NavController,
+    authViewModel: AuthViewModel,
+    onLogin: () -> Unit
+) {
+    composable(AuthNavRoute.Login.route) {
+        LoginScreen(navController, authViewModel, onLogin)
     }
     composable(
-        NavRoute.Signup.withArgsFormat(NavRoute.Signup.id, NavRoute.Signup.showDetails)
+        AuthNavRoute.Signup.withArgsFormat(AuthNavRoute.Signup.id, AuthNavRoute.Signup.showDetails)
     ) { backStackEntry ->
         /*val args = backStackEntry.arguments
 
@@ -27,15 +31,15 @@ fun NavGraphBuilder.addAuthFeature(navController: NavController, authViewModel: 
         val showDetails = args.getBoolean("showDetails")*/
 
         // call profile screen composable function here ...
-        SignupScreen(navController)
+        SignupScreen(navController, onLogin = onLogin)
     }
-    composable(NavRoute.ForgotPassword.route) {
+    composable(AuthNavRoute.ForgotPassword.route) {
         ForgotPassScreen(navController, authViewModel)
     }
-    composable(NavRoute.OtpVerification.route) {
+    composable(AuthNavRoute.OtpVerification.route) {
         OtpVerificationScreen(navController, authViewModel)
     }
-    composable(NavRoute.NewPassword.route) {
-        NewPassScreen(navController)
+    composable(AuthNavRoute.NewPassword.route) {
+        NewPassScreen(navController, authViewModel)
     }
 }

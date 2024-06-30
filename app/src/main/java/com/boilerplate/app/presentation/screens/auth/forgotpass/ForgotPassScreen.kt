@@ -40,8 +40,7 @@ import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
-import com.boilerplate.app.presentation.screens.auth.signup.SignupUIEvent
+import com.boilerplate.app.presentation.navigationcomponent.AuthNavRoute
 import com.boilerplate.app.presentation.screens.auth.signup.SignupUIState
 import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
@@ -83,8 +82,8 @@ fun ForgotPassScreen(
                     snackBarMessage.value = ""
                 }
                 signupState.data?.let {
-                    navController.navigate(route = NavRoute.Login.route, navOptions {
-                        popUpTo(NavRoute.Login.route) {
+                    navController.navigate(route = AuthNavRoute.Login.route, navOptions {
+                        popUpTo(AuthNavRoute.Login.route) {
                             inclusive = true
                         }
                     })
@@ -155,7 +154,7 @@ fun ForgotPassScreen(
                 ) {
                     authViewModel.updateSharedEmailData()
                     authViewModel.onForgotPassEvent(ForgotPassUIEvent.SendRecoverEmailButtonClicked)
-                    navController.navigate(NavRoute.OtpVerification.route)
+                    navController.navigate(AuthNavRoute.OtpVerification.route)
                 }
 
                 VerticalSpacer()

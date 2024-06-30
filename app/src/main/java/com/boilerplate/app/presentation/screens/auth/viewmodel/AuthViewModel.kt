@@ -42,7 +42,7 @@ class AuthViewModel @Inject constructor(
     val sharedEmailData: StateFlow<String> = _sharedEmailData
 
     fun updateSharedEmailData() {
-            _sharedEmailData.value = forgotPassUIState.value.email
+        _sharedEmailData.value = forgotPassUIState.value.email
     }
 
     fun initializeState() {
@@ -84,7 +84,8 @@ class AuthViewModel @Inject constructor(
             .launchIn(viewModelScope)
     }
 
-    fun getUser(): LoginResponse? = sharedPrefs.getUser()
+    fun getUser(): LoginResponse = sharedPrefs.getUser()
+    fun updateUser(copy: LoginResponse): LoginResponse = sharedPrefs.saveUser(copy)
 
     private val _signUpResponse =
         MutableStateFlow(SignupUIState())
@@ -178,6 +179,7 @@ class AuthViewModel @Inject constructor(
                     password = event.password
                 )
             }
+
             is SignupUIEvent.ConfirmPasswordChanged -> {
                 signupUIState.value = signupUIState.value.copy(
                     confirmPassword = event.confirmPassword
@@ -185,7 +187,7 @@ class AuthViewModel @Inject constructor(
             }
 
             SignupUIEvent.SignupButtonClicked -> {
-                if (validateSignupUIDataWithRules()){
+                if (validateSignupUIDataWithRules()) {
                     signUp()
                 }
             }
@@ -202,8 +204,9 @@ class AuthViewModel @Inject constructor(
                     email = event.email
                 )
             }
+
             ForgotPassUIEvent.SendRecoverEmailButtonClicked -> {
-                if (validateForgotPassUIDataWithRules()){
+                if (validateForgotPassUIDataWithRules()) {
 
                 }
             }
