@@ -3,7 +3,10 @@ package com.boilerplate.app.presentation.components
 import android.content.res.Configuration
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -12,6 +15,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -31,20 +36,28 @@ import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -124,7 +137,10 @@ fun TextSmallTitleComponent(
 }
 
 @Composable
-fun LoginTextComponent(modifier: Modifier = Modifier, boldText: String, italicText: String) {
+fun LoginTextComponent(
+    modifier: Modifier = Modifier, boldText: String, italicText: String,
+    color: Color = AppTheme.colorScheme.onBackground
+) {
 
     val annotatedString = buildAnnotatedString {
         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
@@ -139,7 +155,7 @@ fun LoginTextComponent(modifier: Modifier = Modifier, boldText: String, italicTe
         text = annotatedString,
         modifier = modifier,
         style = AppTheme.typography.titleLarge.copy(
-            color = AppTheme.colorScheme.onBackground
+            color = color
         ),
         fontSize = 30.sp,
         textAlign = TextAlign.Center
@@ -199,7 +215,8 @@ fun PrimaryTextFieldComponent(
         if (!errorStatus) {
             if (!errorMessage.isNullOrEmpty()) {
                 Text(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(top = 4.dp, start = 16.dp, end = 16.dp),
                     text = errorMessage,
                     style = AppTheme.typography.labelSmall,
@@ -228,6 +245,7 @@ fun PasswordTextFieldComponent(
     val passwordVisible = remember {
         mutableStateOf(false)
     }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     Column(modifier = modifier) {
         TextField(
@@ -258,9 +276,15 @@ fun PasswordTextFieldComponent(
             ),
             keyboardOptions = keyboardOptions,
             singleLine = true,
-            keyboardActions = KeyboardActions {
-                localFocusManager.clearFocus()
-            },
+            keyboardActions = KeyboardActions (
+                onNext = {
+                    localFocusManager.moveFocus(FocusDirection.Next)
+                    keyboardController?.show()
+                },
+                onDone = {
+                    localFocusManager.clearFocus()
+                }
+            ),
             maxLines = 1,
             value = password.value,
             onValueChange = {
@@ -294,8 +318,9 @@ fun PasswordTextFieldComponent(
         if (!errorStatus) {
             if (!errorMessage.isNullOrEmpty())
                 Text(
-                    modifier = Modifier.fillMaxWidth()
-                    .padding(top = 4.dp, start = 16.dp, end = 16.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp, start = 16.dp, end = 16.dp),
                     style = AppTheme.typography.labelSmall,
                     text = errorMessage,
                     color = AppTheme.colorScheme.primary
@@ -393,6 +418,73 @@ fun DynamicAppBar(
     )
 }
 
+@Composable
+fun OtpTextField(
+    modifier: Modifier = Modifier,
+    otpText: String,
+    otpCount: Int = 6,
+    onOtpTextChange: (String, Boolean) -> Unit
+) {
+    LaunchedEffect(Unit) {
+        if (otpText.length > otpCount) {
+            throw IllegalArgumentException("Otp text value must not have more than otpCount: $otpCount characters")
+        }
+    }
+
+    BasicTextField(
+        modifier = modifier,
+        value = TextFieldValue(otpText, selection = TextRange(otpText.length)),
+        onValueChange = {
+            if (it.text.length <= otpCount) {
+                onOtpTextChange.invoke(it.text, it.text.length == otpCount)
+            }
+        },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+        decorationBox = {
+            Row(horizontalArrangement = Arrangement.Center) {
+                repeat(otpCount) { index ->
+                    CharView(
+                        index = index,
+                        text = otpText
+                    )
+                    if (index != otpCount - 1)
+                        Spacer(modifier = Modifier.width(20.dp))
+                }
+            }
+        },
+        textStyle = TextStyle(textAlign = TextAlign.Center)
+    )
+}
+
+@Composable
+private fun CharView(
+    index: Int,
+    text: String
+) {
+    val isFocused = text.length == index
+    val char = when {
+        index == text.length -> ""
+        index > text.length -> ""
+        else -> text[index].toString()
+    }
+    TextComponent(
+        modifier = Modifier
+            .width(43.dp)
+            .height(53.dp)
+            .border(
+                1.dp, /*Color.Gray,*/
+                when {
+                    isFocused -> AppTheme.colorScheme.primary
+                    else -> AppTheme.colorScheme.onBackgroundGray
+                },
+                AppTheme.shape.container
+            )
+            .padding(2.dp)
+            .wrapContentHeight(align = CenterVertically),
+        value = char,
+        fontSize = 18.sp
+    )
+}
 
 @Composable
 fun VerticalSpacer(size: Dp = 5.dp) {
