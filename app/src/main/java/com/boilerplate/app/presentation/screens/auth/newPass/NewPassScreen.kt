@@ -72,7 +72,7 @@ fun NewPassScreen(
             PasswordTextFieldComponent(
                 modifier = Modifier
                     .fillMaxWidth(),
-                placeholderText = stringResource(R.string.old_password),
+                placeholderText = stringResource(R.string.new_password),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Password,
                     imeAction = ImeAction.Next
