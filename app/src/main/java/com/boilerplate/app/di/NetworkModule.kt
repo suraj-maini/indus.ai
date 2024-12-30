@@ -44,8 +44,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-//    fun provideBaseUrl(): String = "https://hassanrsiddiqi.com/"
-    fun provideBaseUrl(): String = "http://167.172.175.218/"
+
+    fun provideBaseUrl(): String = ""
     //todo - should remove usesCleartextTraffic from manifest file and use https
 
     @Singleton

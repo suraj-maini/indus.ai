@@ -9,6 +9,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.boilerplate.app.theme.AppTheme
@@ -19,9 +20,13 @@ fun PrimaryButton(
     label: String,
     onClick: () -> Unit
 ) {
+    val keyboardController = LocalSoftwareKeyboardController.current
     Button(
         modifier = modifier,
-        onClick = onClick,
+        onClick = {
+            keyboardController?.hide()
+            onClick.invoke()
+        },
         colors = ButtonDefaults.buttonColors(
             containerColor = AppTheme.colorScheme.primary,
             contentColor = AppTheme.colorScheme.onPrimary

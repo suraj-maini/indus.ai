@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Indus.ai</string>
+    <string name="app_name">Husna.ai</string>
     <string name="hide_password">Hide Password</string>
     <string name="show_password">Show Password</string>
     <string name="log">Log</string>
@@ -19,4 +19,20 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="recover">Recover</string>
+    <string name="enter_the_email_for_which_you_want_to_recover_your_password">Enter the email for which you want to recover your password!</string>
+    <string name="send_recovery_link">Send recovery link</string>
+    <string name="remember_password">Remember password?</string>
+    <string name="verify">Verify</string>
+    <string name="did_not_receive_the_code">Did\'t receive the OTP yet?</string>
+    <string name="resend_code">Resend code</string>
+    <string name="otp">OTP</string>
+    <string name="verification">Verification</string>
+    <string name="please_enter_the_otp_sent_to">"Please enter the otp sent to "</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="new_txt">New</string>
+    <string name="your_new_password_must_be_different_from_previous_used_password">Your new password must be different from previous used password</string>
+    <string name="reset_password">Reset Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
 </resources>

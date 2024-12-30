@@ -28,5 +28,7 @@ data class LoginResponse(
     @Json(name = "token")
     var authToken: String? = null,
     @Transient
-    var refreshToken: String? = null
+    var refreshToken: String? = null,
+    @Transient
+    var isLoggedIn: Boolean = false
 )

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -42,17 +43,19 @@ import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
+import com.boilerplate.app.presentation.navigationcomponent.AuthNavRoute
 import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    loginViewModel: AuthViewModel = hiltViewModel()
+    loginViewModel: AuthViewModel = hiltViewModel(),
+    onLogin: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -85,6 +88,7 @@ fun LoginScreen(
                 }
                 loginState.data?.let {
 //                    navController.navigate(NavRoute.Home.route)
+                    onLogin.invoke()
                     Toast.makeText(context, loginViewModel.getUser().toString(), Toast.LENGTH_SHORT).show()
                 }
             }
@@ -98,7 +102,7 @@ fun LoginScreen(
         snackBarMessage = snackBarMessage,
         onButtonClick1 = error,
         onButtonClick = {
-            navController.navigate(NavRoute.Signup.withArgs(123.toString(), "ali"))
+            navController.navigate(AuthNavRoute.Signup.withArgs(123.toString(), "ali"))
         }) {
         val scrollState = rememberScrollState()
 
@@ -107,7 +111,8 @@ fun LoginScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState)
                 .padding(Dimens.defaultScreenPadding)
-                .background(AppTheme.colorScheme.background),
+                .background(AppTheme.colorScheme.background)
+                .imePadding(),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
 
@@ -168,7 +173,7 @@ fun LoginScreen(
                 color = AppTheme.colorScheme.primary,
                 value = stringResource(R.string.forgot_password)
             ) {
-                navController.navigate(NavRoute.ForgotPassword.route)
+                navController.navigate(AuthNavRoute.ForgotPassword.route)
             }
 
             VerticalSpacer()
@@ -189,6 +194,6 @@ fun LoginScreen(
 @Composable
 fun LoginScreenPreview() {
     AppTheme {
-        LoginScreen(navController = NavController(LocalContext.current))
+        LoginScreen(navController = NavController(LocalContext.current), onLogin = {})
     }
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -76,7 +77,7 @@ import com.boilerplate.app.presentation.components.TextComponent
 import com.boilerplate.app.presentation.components.TextSmallTitleComponent
 import com.boilerplate.app.presentation.components.VerticalSpacer
 import com.boilerplate.app.presentation.composables.AuthLayout
-import com.boilerplate.app.presentation.navigationcomponent.NavRoute
+import com.boilerplate.app.presentation.navigationcomponent.AuthNavRoute
 import com.boilerplate.app.presentation.screens.auth.viewmodel.AuthViewModel
 import com.boilerplate.app.theme.AppTheme
 import com.boilerplate.app.theme.Dimens
@@ -87,6 +88,7 @@ import kotlinx.coroutines.launch
 fun SignupScreen(
     navController: NavController,
     authViewModel: AuthViewModel = hiltViewModel(),
+    onLogin: () -> Unit
 ) {
 
     val context = LocalContext.current
@@ -117,8 +119,8 @@ fun SignupScreen(
                     snackBarMessage.value = ""
                 }
                 signupState.data?.let {
-                    navController.navigate(route = NavRoute.Login.route, navOptions {
-                        popUpTo(NavRoute.Login.route) {
+                    navController.navigate(route = AuthNavRoute.Login.route, navOptions {
+                        popUpTo(AuthNavRoute.Login.route) {
                             inclusive = true
                         }
                     })
@@ -144,7 +146,8 @@ fun SignupScreen(
                     .fillMaxSize()
                     .verticalScroll(scrollState)
                     .padding(Dimens.defaultScreenPadding)
-                    .background(AppTheme.colorScheme.background),
+                    .background(AppTheme.colorScheme.background)
+                    .imePadding(),
                 verticalArrangement = Arrangement.spacedBy(10.dp)
             ) {
 

@@ -11,6 +11,8 @@ import com.boilerplate.app.domain.usecase.auth.SignUpUseCase
 import com.boilerplate.app.domain.utils.FailureStatus
 import com.boilerplate.app.domain.utils.Resource
 import com.boilerplate.app.presentation.screens.auth.Validator
+import com.boilerplate.app.presentation.screens.auth.forgotpass.ForgotPassUIEvent
+import com.boilerplate.app.presentation.screens.auth.forgotpass.ForgotPassUIState
 import com.boilerplate.app.presentation.screens.auth.login.LoginUIEvent
 import com.boilerplate.app.presentation.screens.auth.login.LoginUIState
 import com.boilerplate.app.presentation.screens.auth.signup.SignupUIEvent
@@ -19,6 +21,7 @@ import com.boilerplate.app.utils.SharedPreferencesHelper
 //import com.boilerplate.app.utils.EncryptedPrefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -33,6 +36,14 @@ class AuthViewModel @Inject constructor(
 
     var loginUIState = mutableStateOf(LoginUIState())
     var signupUIState = mutableStateOf(SignupUIState())
+    var forgotPassUIState = mutableStateOf(ForgotPassUIState())
+
+    private val _sharedEmailData = MutableStateFlow("Initial data")
+    val sharedEmailData: StateFlow<String> = _sharedEmailData
+
+    fun updateSharedEmailData() {
+        _sharedEmailData.value = forgotPassUIState.value.email
+    }
 
     fun initializeState() {
         viewModelScope.launch {
@@ -74,12 +85,13 @@ class AuthViewModel @Inject constructor(
     }
 
     fun getUser(): LoginResponse = sharedPrefs.getUser()
+    fun updateUser(copy: LoginResponse): LoginResponse = sharedPrefs.saveUser(copy)
 
     private val _signUpResponse =
         MutableStateFlow(SignupUIState())
     val signUpResponse = _signUpResponse
 
-    fun signUp() {
+    private fun signUp() {
 
         val firstName = signupUIState.value.firstName
         val lastName = signupUIState.value.lastName
@@ -167,6 +179,7 @@ class AuthViewModel @Inject constructor(
                     password = event.password
                 )
             }
+
             is SignupUIEvent.ConfirmPasswordChanged -> {
                 signupUIState.value = signupUIState.value.copy(
                     confirmPassword = event.confirmPassword
@@ -174,13 +187,32 @@ class AuthViewModel @Inject constructor(
             }
 
             SignupUIEvent.SignupButtonClicked -> {
-                if (validateSignupUIDataWithRules()){
+                if (validateSignupUIDataWithRules()) {
                     signUp()
                 }
             }
 
         }
     }
+
+
+    fun onForgotPassEvent(event: ForgotPassUIEvent) {
+        when (event) {
+
+            is ForgotPassUIEvent.EmailChanged -> {
+                forgotPassUIState.value = forgotPassUIState.value.copy(
+                    email = event.email
+                )
+            }
+
+            ForgotPassUIEvent.SendRecoverEmailButtonClicked -> {
+                if (validateForgotPassUIDataWithRules()) {
+
+                }
+            }
+        }
+    }
+
 
     private fun validateLoginUIDataWithRules(): Boolean {
         val emailResult = Validator.validateEmail(
@@ -243,6 +275,21 @@ class AuthViewModel @Inject constructor(
 //        allValidationsPassed.value = emailResult.isValid && passwordResult.isValid
         return emailResult.isValid && passwordResult.isValid && confirmPasswordResult.isValid && firstNameResult.isValid && lastNameResult.isValid
 //        return emailResult.isValid
+
+    }
+
+    private fun validateForgotPassUIDataWithRules(): Boolean {
+
+        val emailResult = Validator.validateEmail(
+            email = forgotPassUIState.value.email
+        )
+
+        forgotPassUIState.value = forgotPassUIState.value.copy(
+            emailError = emailResult.isValid,
+            emailErrorMsg = emailResult.errorMessage
+        )
+
+        return emailResult.isValid
 
     }
 

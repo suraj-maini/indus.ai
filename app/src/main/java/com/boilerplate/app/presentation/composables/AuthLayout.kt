@@ -31,7 +31,7 @@ import com.boilerplate.app.utils.hideKeyboardOnOutsideClick
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthLayout(
-    isLogin: Boolean?,
+    isLogin: Boolean? = null,
     isLoading: Boolean = false,
     canShowSnackBar: MutableState<Boolean> = mutableStateOf(false),
     snackBarMessage: MutableState<String> = mutableStateOf(""),
